@@ -1,0 +1,42 @@
+:root {
+  /* Paleta "Cuaderno Escolar" */
+  --color-bg-main: #fcfcfc;      /* Papel más blanco, menos amarillento */
+  --color-bg-surface: #ffffff;   /* Hojas blancas */
+  --color-text-primary: #334155; /* Grafito oscuro */
+  --color-text-secondary: #64748b;
+  
+  /* Colores de Cuadrícula */
+  --color-grid: rgba(0, 113, 227, 0.1); /* Azul de cuaderno */
+  --grid-size: 30px;
+
+  /* Acentos estilo Crayola */
+  --color-accent: #2563eb;       /* Azul escolar */
+  --color-accent-hover: #1d4ed8;
+  
+  /* Estados interactivos */
+  --color-success: #16a34a;
+  --color-success-bg: #f0fdf4;
+  --color-error: #dc2626;
+  --color-error-bg: #fef2f2;
+
+  --color-border: #cbd5e1;       /* Borde suave */
+  --color-border-active: #2563eb;
+
+  /* Sombreados que simulan relieve de papel */
+  --shadow-sm: 2px 2px 5px rgba(0, 0, 0, 0.05);
+  --shadow-md: 4px 4px 10px rgba(0, 0, 0, 0.1);
+
+  /* Curvaturas más orgánicas e imperfectas */
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  /* Espaciados */
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 40px;
+
+  /* Tipografía: Usaremos fuentes del sistema, pero priorizaremos legibilidad */
+  --font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-handwriting: 'Gochi Hand', cursive;
+}

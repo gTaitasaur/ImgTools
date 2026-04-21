@@ -1,0 +1,204 @@
+.converter-stage {
+  background-color: var(--color-bg-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl) var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  animation: fadeIn 0.4s ease-out;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+}
+
+.converter-hero {
+  width: 100%;
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Encabezado del contenedor de archivos */
+.converter-header-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--spacing-md);
+}
+
+.btn-clear-all {
+  background-color: transparent;
+  color: var(--color-error);
+  border: 1px solid var(--color-error);
+  padding: 6px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-clear-all:hover {
+  background-color: var(--color-error-bg);
+}
+
+/* Fila de Archivo */
+.converter-file-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: white;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  transition: border-color 0.2s;
+}
+
+.converter-file-row:hover {
+  border-color: #a1a1a6;
+}
+
+/* Layout horizontal de la fila */
+.converter-row-top {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.file-preview-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  object-fit: cover;
+  background-color: #f5f5f7;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.file-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.file-name {
+  font-weight: 600;
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-meta {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+.conversion-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.format-select {
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: #f5f5f7;
+  color: var(--color-text-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.format-select:focus {
+  border-color: var(--color-accent);
+}
+
+.btn-remove-row {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-remove-row:hover {
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+.remove-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Opciones condicionales de Transparencia */
+.transparency-options {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding-top: var(--spacing-sm);
+  border-top: 1px dashed var(--color-border);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.transparency-options strong {
+  color: #e68a00; /* Naranja advertencia */
+}
+
+.color-radio-group {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.color-radio {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.color-radio input[type="radio"] {
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
+/* Estado de procesamiento de fila */
+.row-status-badge {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 100px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-processing {
+  background-color: #f0f7ff;
+  color: var(--color-accent);
+}
+
+.status-done {
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.status-error {
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+/* Botonera final */
+.converter-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+}
