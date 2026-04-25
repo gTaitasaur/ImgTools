@@ -17,6 +17,13 @@
   width: 100%;
   animation: fadeIn 0.4s ease-out;
   box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.converter-stage.drag-active {
+  border-color: var(--color-accent);
+  border-style: dashed;
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1), 8px 8px 0px rgba(0, 0, 0, 0.05);
 }
 
 .converter-hero {

@@ -17,6 +17,7 @@ export const ConverterModule: React.FC<ConverterModuleProps> = ({ files, onAddFi
   const [conversionList, setConversionList] = useState<ConverterFile[]>([]);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [globalFormat, setGlobalFormat] = useState<TargetFormat>('image/jpeg');
+  const [isDragOver, setIsDragOver] = useState<boolean>(false);
   const addFilesInputRef = useRef<HTMLInputElement>(null);
 
   /**
@@ -168,7 +169,21 @@ export const ConverterModule: React.FC<ConverterModuleProps> = ({ files, onAddFi
   const idleCount = conversionList.filter(i => i.status === 'idle').length;
 
   return (
-    <div className="converter-stage">
+    <div 
+      className={`converter-stage ${isDragOver ? 'drag-active' : ''}`}
+      onDragOver={(e) => { e.preventDefault(); if (!isProcessing) setIsDragOver(true); }}
+      onDragLeave={(e) => { e.preventDefault(); setIsDragOver(false); }}
+      onDrop={(e) => {
+        e.preventDefault();
+        setIsDragOver(false);
+        if (isProcessing) return;
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+          const validFiles = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+          if (validFiles.length > 0) onAddFiles(validFiles);
+          e.dataTransfer.clearData();
+        }
+      }}
+    >
       <div className="converter-hero">
         <div className="converter-header-actions">
           {/* Selector Global de Formato */}
