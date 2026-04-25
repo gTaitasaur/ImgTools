@@ -15,8 +15,8 @@ export const ConverterTool: React.FC = () => {
   return (
     <div className="home-container" style={{ paddingTop: '20px' }}>
       <section className="hero-section" style={{ marginBottom: '40px' }}>
-        <h1 className="hero-title">Formatos <span>mágicos.</span></h1>
-        <p className="hero-subtitle">Convierte tus imágenes al formato que necesites en segundos, sin subir nada a internet.</p>
+        <h1 className="hero-title">Convertidor de <span>Formatos de Imagen.</span></h1>
+        <p className="hero-subtitle">Cambia el formato de tus fotos a WebP, AVIF, JPG o PNG masivamente. Todo se procesa en tu navegador para proteger tus archivos originales.</p>
       </section>
 
       <ConverterModule 

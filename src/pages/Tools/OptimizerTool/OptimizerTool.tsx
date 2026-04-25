@@ -13,8 +13,8 @@ export const OptimizerTool: React.FC = () => {
   return (
     <div className="home-container" style={{ paddingTop: '20px' }}>
       <section className="hero-section" style={{ marginBottom: '40px' }}>
-        <h1 className="hero-title">Peso <span>pluma.</span></h1>
-        <p className="hero-subtitle">Reduce el tamaño de tus imágenes hasta un 80% sin que nadie note la diferencia.</p>
+        <h1 className="hero-title">Comprimir Imágenes <span>sin Perder Calidad.</span></h1>
+        <p className="hero-subtitle">Reduce drásticamente el peso de tus fotos JPG, PNG o WebP. Mejora la velocidad de tu web y tu SEO con nuestra compresión local segura.</p>
       </section>
 
       <OptimizerModule 

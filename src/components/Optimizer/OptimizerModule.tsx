@@ -115,7 +115,7 @@ export const OptimizerModule: React.FC<OptimizerModuleProps> = ({ originalUrl, o
               {isProcessing && (
                 <div className="processing-spinner-overlay">
                   <div className="spinner"></div>
-                  <span className="processing-text">Optimizando...</span>
+                  <span className="processing-text">Comprimiendo de forma segura...</span>
                 </div>
               )}
             </div>
@@ -148,7 +148,7 @@ export const OptimizerModule: React.FC<OptimizerModuleProps> = ({ originalUrl, o
 
       {/* Controles de Configuración */}
       <div className="optimizer-controls">
-        <h3 className="section-title">Nivel de Optimización</h3>
+        <h3 className="section-title">Nivel de Compresión</h3>
         <PresetSelector 
           selectedId={selectedPreset.id} 
           disabled={!originalUrl}
@@ -170,8 +170,8 @@ export const OptimizerModule: React.FC<OptimizerModuleProps> = ({ originalUrl, o
               onChange={(e) => setPreserveResolution(e.target.checked)} 
             />
             <div className="toggle-text">
-              <strong>Conservar resolución original</strong>
-              <span>Evita que la imagen cambie su ancho o alto. Mantiene sus dimensiones originales.</span>
+              <strong>Mantener resolución original</strong>
+              <span>Evita que tu foto pierda calidad al mantener intactas sus dimensiones de ancho y alto.</span>
             </div>
           </label>
 
@@ -183,7 +183,7 @@ export const OptimizerModule: React.FC<OptimizerModuleProps> = ({ originalUrl, o
             />
             <div className="toggle-text">
               <strong>Convertir a formato WebP</strong>
-              <span>Genera un archivo ultra liviano ideal para web. Desmarca para conservar formato original.</span>
+              <span>El formato recomendado por Google para mejorar el rendimiento de tu página web y tu SEO.</span>
             </div>
           </label>
         </div>
@@ -191,14 +191,14 @@ export const OptimizerModule: React.FC<OptimizerModuleProps> = ({ originalUrl, o
         {/* Acciones */}
         <div className="optimizer-actions">
           {!originalUrl ? (
-            <p className="optimizer-hint">Sube una foto para empezar a optimizar</p>
+            <p className="optimizer-hint">Sube o arrastra una foto para empezar a comprimir de forma privada</p>
           ) : (
             <button 
               className="btn-success" 
               onClick={handleDownload}
               disabled={isProcessing || !result}
             >
-              {isProcessing ? 'Calculando peso...' : `Descargar (${formatBytes(result?.newSize || 0)})`}
+              {isProcessing ? 'Optimizando...' : `Descargar Imagen Optimizada (${formatBytes(result?.newSize || 0)})`}
             </button>
           )}
         </div>

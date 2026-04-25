@@ -157,7 +157,7 @@ export const CropperModule: React.FC<CropperModuleProps> = ({ imageUrl, onImageS
                 onClick={() => fileInputRef.current?.click()} 
                 disabled={isExporting}
               >
-                Cambiar Imagen
+                Seleccionar Otra Foto
               </button>
             </div>
             <ReactCrop
@@ -183,14 +183,14 @@ export const CropperModule: React.FC<CropperModuleProps> = ({ imageUrl, onImageS
       </div>
 
       {!imageUrl ? (
-        <p className="cropper-hint">Sube una foto para empezar a recortar</p>
+        <p className="cropper-hint">Sube o arrastra una foto para empezar a recortarla gratis</p>
       ) : (
         <button 
           className="btn-download" 
           onClick={handleDownload}
           disabled={!completedCrop || isExporting}
         >
-          {isExporting ? 'Guardando trazos...' : 'Descargar Recorte'}
+          {isExporting ? 'Procesando...' : 'Descargar Imagen Recortada'}
         </button>
       )}
     </div>

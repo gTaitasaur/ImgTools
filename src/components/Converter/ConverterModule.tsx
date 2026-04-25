@@ -229,8 +229,8 @@ export const ConverterModule: React.FC<ConverterModuleProps> = ({ files, onAddFi
           <div className="performance-warning">
             <span>⚠️</span>
             <span>
-              Tienes <strong>{conversionList.length}</strong> imágenes cargadas. 
-              La conversión podría tardar un poco más de lo habitual.
+              Has seleccionado <strong>{conversionList.length}</strong> imágenes. 
+              Como todo el procesamiento es 100% privado en tu computadora, la conversión masiva puede tardar unos segundos.
             </span>
           </div>
         )}
@@ -330,12 +330,12 @@ export const ConverterModule: React.FC<ConverterModuleProps> = ({ files, onAddFi
           disabled={isProcessing || idleCount === 0}
         >
           {isProcessing 
-            ? 'Procesando...' 
+            ? 'Procesando formatos...' 
             : idleCount === conversionList.length
-              ? `Convertir ${conversionList.length} Archivo${conversionList.length > 1 ? 's' : ''}`
+              ? `Convertir ${conversionList.length} Foto${conversionList.length > 1 ? 's' : ''}`
               : idleCount > 0
                 ? `Convertir ${idleCount} Pendiente${idleCount > 1 ? 's' : ''}`
-                : 'Todas las imágenes están convertidas ✓'
+                : 'Todas las conversiones completadas ✓'
           }
         </button>
       </div>
