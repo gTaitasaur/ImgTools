@@ -8,6 +8,7 @@ import { ConverterTool } from './pages/Tools/ConverterTool/ConverterTool';
 import { RotateFlipTool } from './pages/Tools/RotateFlipTool/RotateFlipTool';
 import { WatermarkTool } from './pages/Tools/WatermarkTool/WatermarkTool';
 import { ColorPaletteTool } from './pages/Tools/ColorPaletteTool/ColorPaletteTool';
+import { Base64Tool } from './pages/Tools/Base64Tool/Base64Tool';
 import './App.css'; // Mantenemos variables de envoltura si quedan
 
 const App: React.FC = () => {
@@ -25,6 +26,7 @@ const App: React.FC = () => {
           <Route path="herramientas/girar-voltear" element={<RotateFlipTool />} />
           <Route path="herramientas/marca-de-agua" element={<WatermarkTool />} />
           <Route path="herramientas/paleta-colores" element={<ColorPaletteTool />} />
+          <Route path="herramientas/base64" element={<Base64Tool />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -114,15 +114,15 @@ export const Home: React.FC = () => {
         </div>
 
         {/* Transformador Base64 */}
-        <div style={{opacity: 0.6}} className="tool-card">
-          <div className="tool-icon-wrapper" style={{ backgroundColor: '#f5f5f7', color: '#86868b' }}>
+        <Link to="/herramientas/base64" className="tool-card">
+          <div className="tool-icon-wrapper">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
             </svg>
           </div>
-          <h3>Convertir Imagen a Base64</h3>
-          <p>Transforma tus iconos e imágenes a código Base64 para incrustarlos directamente en tu HTML o CSS, ahorrando peticiones al servidor. (Próximamente)</p>
-        </div>
+          <h3>Convertidor Base64</h3>
+          <p>Codifica tus imágenes a Base64 para incrustarlas en HTML o CSS, o decodifica un código Base64 a imagen. Bidireccional, instantáneo y 100% privado.</p>
+        </Link>
 
         {/* Favicons */}
         <div style={{opacity: 0.6}} className="tool-card">
