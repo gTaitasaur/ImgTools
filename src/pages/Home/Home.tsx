@@ -92,15 +92,15 @@ export const Home: React.FC = () => {
         </div>
 
         {/* Paleta de Colores */}
-        <div style={{opacity: 0.6}} className="tool-card">
-          <div className="tool-icon-wrapper" style={{ backgroundColor: '#f5f5f7', color: '#86868b' }}>
+        <Link to="/herramientas/paleta-colores" className="tool-card">
+          <div className="tool-icon-wrapper">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
             </svg>
           </div>
           <h3>Extraer Paleta de Colores</h3>
-          <p>Saca los colores predominantes de cualquier imagen y obtén sus códigos HEX. La herramienta ideal para diseñadores web y creativos. (Próximamente)</p>
-        </div>
+          <p>Saca los colores predominantes de cualquier imagen y obtén sus códigos HEX. La herramienta ideal para diseñadores web y creativos. Procesamiento instantáneo y local.</p>
+        </Link>
 
         {/* Filtros */}
         <div style={{opacity: 0.6}} className="tool-card">

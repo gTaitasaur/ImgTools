@@ -7,6 +7,7 @@ import { OptimizerTool } from './pages/Tools/OptimizerTool/OptimizerTool';
 import { ConverterTool } from './pages/Tools/ConverterTool/ConverterTool';
 import { RotateFlipTool } from './pages/Tools/RotateFlipTool/RotateFlipTool';
 import { WatermarkTool } from './pages/Tools/WatermarkTool/WatermarkTool';
+import { ColorPaletteTool } from './pages/Tools/ColorPaletteTool/ColorPaletteTool';
 import './App.css'; // Mantenemos variables de envoltura si quedan
 
 const App: React.FC = () => {
@@ -23,6 +24,7 @@ const App: React.FC = () => {
           <Route path="herramientas/cambiar-formato" element={<ConverterTool />} />
           <Route path="herramientas/girar-voltear" element={<RotateFlipTool />} />
           <Route path="herramientas/marca-de-agua" element={<WatermarkTool />} />
+          <Route path="herramientas/paleta-colores" element={<ColorPaletteTool />} />
         </Route>
       </Routes>
     </BrowserRouter>
