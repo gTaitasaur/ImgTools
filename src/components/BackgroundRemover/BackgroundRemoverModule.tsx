@@ -3,9 +3,10 @@ import { DragAndDrop } from '../DragAndDrop/DragAndDrop';
 import { ImageComparisonSlider } from './ImageComparisonSlider';
 // @ts-ignore
 import BgWorker from '../../workers/bgRemoval.worker?worker';
+import { MaskEditor } from './MaskEditor';
 import './BackgroundRemoverModule.css';
 
-type ProcessingState = 'idle' | 'ready_to_process' | 'downloading_model' | 'processing' | 'done' | 'error';
+type ProcessingState = 'idle' | 'ready_to_process' | 'downloading_model' | 'processing' | 'done' | 'editing_mask' | 'error';
 
 export const BackgroundRemoverModule: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -39,7 +40,7 @@ export const BackgroundRemoverModule: React.FC = () => {
         // pero la IA aún se estaba descargando en segundo plano. Cambiamos la vista
         // a "Descargando modelo de IA...".
         setStatus(prev => {
-          if (prev === 'processing' || prev === 'ready_to_process') return 'downloading_model';
+          if (prev === 'processing') return 'downloading_model';
           return prev;
         });
       }
@@ -94,6 +95,13 @@ export const BackgroundRemoverModule: React.FC = () => {
       handleImageSelected(url, selectedFile);
       e.target.value = '';
     }
+  };
+
+  const handleSaveMask = (newBlob: Blob) => {
+    const url = URL.createObjectURL(newBlob);
+    if (resultUrl) URL.revokeObjectURL(resultUrl);
+    setResultUrl(url);
+    setStatus('done');
   };
 
   const handleDownload = () => {
@@ -185,15 +193,27 @@ export const BackgroundRemoverModule: React.FC = () => {
               </div>
             </div>
             
-            <div className="bgrm-actions">
+            <div className="bgrm-actions" style={{ gap: '15px' }}>
+              <button className="bgrm-btn-change" onClick={() => setStatus('editing_mask')} style={{ padding: '12px 20px', borderRadius: '8px' }}>
+                🖌️ Perfeccionar Recorte
+              </button>
               <button className="bgrm-btn-download" onClick={handleDownload}>
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l4-4m-4 4V4" />
                 </svg>
-                Descargar PNG Transparente
+                Descargar PNG
               </button>
             </div>
           </div>
+        )}
+
+        {status === 'editing_mask' && originalUrl && resultUrl && (
+          <MaskEditor 
+            originalSrc={originalUrl} 
+            resultSrc={resultUrl} 
+            onSave={handleSaveMask} 
+            onCancel={() => setStatus('done')} 
+          />
         )}
       </div>
     </div>
