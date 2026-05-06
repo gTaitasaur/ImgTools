@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Logo } from '../UI/Logo';
 import './Navbar.css';
 
 export const Navbar: React.FC = () => {
@@ -25,7 +26,7 @@ export const Navbar: React.FC = () => {
       <nav className="navbar">
         <div className="navbar-container">
           <Link to="/" className="brand-link" onClick={closeMenu}>
-            PixelTools
+            <Logo size={64} />
           </Link>
 
           {/* Desktop Links */}
@@ -40,7 +41,7 @@ export const Navbar: React.FC = () => {
                 rel="noopener noreferrer"
                 className="nav-btn-support"
               >
-                ☕ Apoya PixelTools
+                ☕ Apoya Pixetide
               </a>
             </div>
           </div>
@@ -76,7 +77,7 @@ export const Navbar: React.FC = () => {
               className="overlay-link support-btn"
               onClick={closeMenu}
             >
-              ☕ Apoya PixelTools
+              ☕ Apoya Pixetide
             </a>
           </div>
         </div>

@@ -10,8 +10,8 @@
   --grid-size: 20px;
 
   /* Acentos (Se mantienen para botones y links activos) */
-  --color-accent: #2563eb;       
-  --color-accent-hover: #1d4ed8;
+  --color-accent: #a855f7;       
+  --color-accent-hover: #9333ea;
   
   /* Estados interactivos */
   --color-success: #16a34a;
@@ -20,7 +20,7 @@
   --color-error-bg: #fef2f2;
 
   --color-border: #000000;       /* Borde suave general ahora es negro puro */
-  --color-border-active: #2563eb;
+  --color-border-active: #a855f7;
 
   /* Sombreados que simulan relieve de papel */
   --shadow-sm: 2px 2px 5px rgba(0, 0, 0, 0.05);

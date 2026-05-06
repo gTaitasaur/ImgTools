@@ -44,25 +44,25 @@
   transition: transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
 }
 
-/* Hover: La tarjeta se levanta y la sombra se difumina */
-.neobrutal-card-wrapper:hover .neobrutal-card {
+/* Hover: La tarjeta se levanta y la sombra se difumina (SOLO SI NO ESTÁ DESACTIVADA) */
+.neobrutal-card-wrapper:not(.disabled):hover .neobrutal-card {
   transform: translate(-10px, -10px);
 }
 
-.neobrutal-card-wrapper:hover .card-shadow {
+.neobrutal-card-wrapper:not(.disabled):hover .card-shadow {
   /* La sombra se desplaza y se difumina de forma elástica */
   transform: translate(2px, 4px);
   filter: blur(8px);
   opacity: 0.6;
 }
 
-/* Animación de Título: Cambio a color de acento */
-.neobrutal-card-wrapper:hover .card-title {
+/* Animación de Título: Cambio a color de acento (SOLO SI NO ESTÁ DESACTIVADA) */
+.neobrutal-card-wrapper:not(.disabled):hover .card-title {
   color: var(--color-accent);
 }
 
-/* Animación de Icono: Micro-escalado y rotación */
-.neobrutal-card-wrapper:hover .card-icon {
+/* Animación de Icono: Micro-escalado y rotación (SOLO SI NO ESTÁ DESACTIVADA) */
+.neobrutal-card-wrapper:not(.disabled):hover .card-icon {
   transform: scale(1.25) rotate(5deg);
   color: var(--color-accent);
 }
@@ -128,17 +128,18 @@
 .neobrutal-card-wrapper.disabled .neobrutal-card {
   background-color: #f8fafc;
   border-style: dashed;
+  transform: none; /* Aseguramos que no haya transformación remanente */
 }
 
-.neobrutal-card-wrapper.disabled:hover .neobrutal-card,
-.neobrutal-card-wrapper.disabled:hover .card-shadow {
+.neobrutal-card-wrapper.disabled .card-shadow {
   transform: none;
+  opacity: 0.5; /* Sombra más tenue para indicar desactivado */
   filter: blur(0px);
-  opacity: 1;
 }
 
 .neobrutal-card-wrapper.disabled .card-icon,
 .neobrutal-card-wrapper.disabled .card-title,
 .neobrutal-card-wrapper.disabled .card-description {
   opacity: 0.4;
+  color: var(--color-text-primary); /* Forzamos color base */
 }

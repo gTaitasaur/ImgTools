@@ -7,7 +7,7 @@ export const Home: React.FC = () => {
     <div className="home-container">
       <div className="hub-wrapper">
         <section className="hero-section">
-          <h1 className="hero-title">PixelTools: Tu Suite de Edición Local, Rápida y Privada</h1>
+          <h1 className="hero-title">Pixetide: Tu Suite de Edición Local, Rápida y Privada</h1>
           <p className="hero-subtitle">
             Edita, comprime y convierte tus fotos sin subir nada a internet. Todo el procesamiento se realiza localmente en tu navegador para garantizar tu privacidad y ahorrarte horas de trabajo. Una suite creada con dedicación para hacerte la vida más fácil.
           </p>

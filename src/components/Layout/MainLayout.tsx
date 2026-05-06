@@ -17,7 +17,7 @@ export const MainLayout: React.FC = () => {
         color: '#86868b',
         fontSize: '0.85rem'
       }}>
-        <p>PixelTools — Rendimiento 100% en tu navegador.</p>
+        <p>Pixetide — Rendimiento 100% en tu navegador.</p>
       </footer>
     </div>
   );

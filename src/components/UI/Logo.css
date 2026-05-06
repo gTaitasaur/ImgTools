@@ -1,0 +1,40 @@
+/* ==========================================================================
+   PIXETIDE STANDALONE LOGO STYLES
+   Aislado para evitar colisiones con el resto de la web.
+   ========================================================================== */
+
+.pixetide-logo-standalone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  user-select: none;
+  text-decoration: none;
+}
+
+.pixetide-logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+}
+
+.pixetide-logo-text {
+  font-family: var(--font-family, sans-serif);
+  font-weight: 900;
+  font-size: 1.8rem;
+  color: var(--color-text-primary);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.pixetide-logo-standalone svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Efecto elástico al pasar el ratón */
+.pixetide-logo-standalone:hover .pixetide-logo-icon {
+  transform: rotate(45deg) scale(1.1);
+}

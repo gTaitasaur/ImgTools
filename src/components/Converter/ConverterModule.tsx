@@ -141,7 +141,7 @@ export const ConverterModule: React.FC<ConverterModuleProps> = ({ files, onAddFi
         const zipBlob = await packageZip(zipPayload);
         const a = document.createElement('a');
         a.href = URL.createObjectURL(zipBlob);
-        a.download = `PixelTools_Conversiones_${Date.now()}.zip`;
+        a.download = `Pixetide_Conversiones_${Date.now()}.zip`;
         a.click();
       }
     }

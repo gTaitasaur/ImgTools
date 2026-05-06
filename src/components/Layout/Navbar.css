@@ -36,14 +36,8 @@
 /* ---- Logo / Marca ---- */
 .brand-link {
   text-decoration: none;
-  font-family: var(--font-family);
-  font-weight: 900;
-  /* Aún más pesado */
-  font-size: 1.8rem;
-  color: var(--color-text-primary);
   display: flex;
   align-items: center;
-  letter-spacing: -1px;
 }
 
 /* ---- Enlaces ---- */
@@ -77,7 +71,6 @@
 
 .nav-link:hover {
   transform: translateY(-2px);
-  color: var(--color-accent);
 }
 
 .nav-link:hover::after {
