@@ -12,7 +12,7 @@
 
 .hub-wrapper {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1440px; /* Aumentado para tener más ancho y menos márgenes vacíos */
   background-color: var(--color-bg-surface);
   /* "Cuadro Negro": Borde grueso y sombra dura igual que el Navbar */
   border: 3px solid var(--color-text-primary);
@@ -49,16 +49,17 @@
 /* ---- Grilla de Herramientas ---- */
 .tools-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr); /* 4 tarjetas en pantallas grandes */
   gap: 32px; /* Espacio amplio entre tarjetas */
   padding: 40px 60px; /* Padding generoso dentro del contenedor blanco */
   background-color: transparent;
 }
 
 /* ---- Responsive ---- */
-@media (max-width: 1024px) {
+
+@media (max-width: 1150px) {
   .tools-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* Disminuye a 3 */
     padding: 40px;
   }
 }
@@ -83,8 +84,8 @@
   }
 
   .tools-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 32px 24px;
+    grid-template-columns: repeat(2, 1fr); /* 2 tarjetas por fila en móvil */
+    gap: 16px; /* Reducimos el gap para que quepan bien en móvil */
+    padding: 24px 16px;
   }
 }

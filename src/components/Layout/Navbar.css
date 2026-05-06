@@ -11,7 +11,8 @@
 
 .navbar {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1440px;
+  /* Ampliado para coincidir con el body */
   height: 80px;
   background-color: var(--color-bg-surface);
   /* "Cuadro Negro" como pidió el usuario: Borde grueso y sombra dura */
@@ -20,7 +21,8 @@
   display: flex;
   align-items: center;
   z-index: 100;
-  margin-bottom: 32px; /* Separación del siguiente container */
+  margin-bottom: 32px;
+  /* Separación del siguiente container */
 }
 
 .navbar-container {
@@ -35,7 +37,8 @@
 .brand-link {
   text-decoration: none;
   font-family: var(--font-family);
-  font-weight: 900; /* Aún más pesado */
+  font-weight: 900;
+  /* Aún más pesado */
   font-size: 1.8rem;
   color: var(--color-text-primary);
   display: flex;
@@ -65,15 +68,32 @@
   text-underline-offset: 4px;
 }
 
+.nav-support-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.nav-support-microcopy {
+  font-family: var(--font-handwriting, cursive); /* Usamos fuente manuscrita si existe */
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+  transform: rotate(-2deg); /* Un toque neobrutalista / imperfecto */
+  white-space: nowrap;
+}
+
 .nav-btn-support {
   text-decoration: none;
   font-family: var(--font-family);
   font-size: 1rem;
   color: var(--color-text-primary);
   border: 2px solid var(--color-text-primary);
-  padding: 10px 24px;
+  padding: 8px 20px;
   font-weight: 700;
-  background-color: transparent;
+  background-color: #ffd600; /* Color Ko-fi pero con borde negro */
   box-shadow: 3px 3px 0px rgba(0, 0, 0, 1);
   transition: all 0.1s ease;
 }
@@ -83,12 +103,142 @@
   box-shadow: 1px 1px 0px rgba(0, 0, 0, 1);
 }
 
+/* ---- Burger Menu Button ---- */
+.burger-menu {
+  display: none;
+  /* Oculto en desktop */
+  flex-direction: column;
+  justify-content: space-between;
+  width: 32px;
+  height: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+}
+
+.burger-line {
+  width: 100%;
+  height: 4px;
+  background-color: var(--color-text-primary);
+  border: 1px solid var(--color-text-primary);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.burger-menu.open .burger-line:nth-child(1) {
+  transform: translateY(10px) rotate(45deg);
+}
+
+.burger-menu.open .burger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.burger-menu.open .burger-line:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg);
+}
+
+/* ---- Fullscreen Overlay ---- */
+.nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.65);
+  /* Leve transparencia */
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s ease;
+}
+
+.nav-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.close-overlay {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  background: none;
+  border: none;
+  font-size: 4rem;
+  font-weight: 300;
+  /* Un trazo fino pero gigante queda muy elegante y brutalista */
+  color: var(--color-text-primary);
+  cursor: pointer;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.close-overlay:hover {
+  transform: scale(1.1) rotate(90deg);
+}
+
+.overlay-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+  padding: 20px;
+}
+
+.overlay-link {
+  font-family: var(--font-family);
+  font-size: 2rem;
+  font-weight: 800;
+  text-decoration: none;
+  color: var(--color-text-primary);
+  transition: all 0.2s ease;
+  padding: 10px 20px;
+  border: 3px solid transparent;
+}
+
+.overlay-link:hover {
+  background-color: var(--color-bg-main);
+  border-color: var(--color-text-primary);
+  box-shadow: 6px 6px 0px var(--color-text-primary);
+  transform: translate(-4px, -4px);
+}
+
+.overlay-link.support-btn {
+  background-color: #ffd600;
+  border-color: var(--color-text-primary);
+  box-shadow: 8px 8px 0px var(--color-text-primary);
+  margin-bottom: 10px;
+}
+
+.mobile-support-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.mobile-support-microcopy {
+  font-family: var(--font-handwriting, cursive);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  text-align: center;
+  max-width: 250px;
+  transform: rotate(1deg);
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 768px) {
   .navbar-wrapper {
     padding: 24px 16px 0 16px;
   }
-  
+
   .navbar {
     height: 64px;
     margin-bottom: 24px;
@@ -104,17 +254,11 @@
     font-size: 1.4rem;
   }
 
-  .navbar-links {
-    gap: 16px;
+  .desktop-only {
+    display: none !important;
   }
-  
-  .nav-link {
-    display: none; 
-  }
-  
-  .nav-btn-support {
-    padding: 6px 16px;
-    font-size: 0.9rem;
+
+  .burger-menu {
+    display: flex;
   }
 }
-
