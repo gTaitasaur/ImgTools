@@ -26,6 +26,8 @@
   color: var(--color-text-primary);
   letter-spacing: -1px;
   line-height: 1;
+  /* Ajuste fino para centrar visualmente con el ícono */
+  transform: translateY(2px);
 }
 
 .pixetide-logo-standalone svg {
