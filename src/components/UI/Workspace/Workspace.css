@@ -1,0 +1,101 @@
+/* ==========================================================================
+   TOOL WORKSPACE CONTAINER - Estética Neobrutalista Ligera
+   ========================================================================== */
+
+.tool-workspace-container {
+  width: 100%;
+  max-width: 1360px; /* Levemente menor que los 1440px del navbar */
+  margin: 0 auto;
+  background-color: var(--color-bg-surface);
+  /* Borde más liviano (2px) que el del Home (3px) */
+  border: 2px solid var(--color-text-primary);
+  /* Sombra más liviana y sutil */
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.15);
+  padding: 40px;
+  position: relative;
+  transition: box-shadow 0.3s ease;
+}
+
+.tool-workspace-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+}
+
+/* Animación suave de entrada */
+.fade-in {
+  animation: fadeInWorkspace 0.6s ease-out;
+}
+
+@keyframes fadeInWorkspace {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsividad */
+@media (max-width: 1440px) {
+  .tool-workspace-container {
+    max-width: calc(100% - 80px); /* Margen proporcional en pantallas intermedias */
+  }
+}
+
+@media (max-width: 768px) {
+  .tool-workspace-container {
+    max-width: calc(100% - 48px); /* Coincide con el padding del navbar-wrapper (24px + 24px) */
+    padding: 24px 16px;
+    margin: 0 auto;
+    border-width: 2px;
+  }
+}
+
+/* Estilos para el encabezado de las herramientas (Título + Descripción) */
+.tool-header {
+  text-align: center;
+  padding: 60px 24px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.tool-title {
+  font-size: 3.2rem;
+  font-weight: 900;
+  color: var(--color-text-primary);
+  margin-bottom: 16px;
+  line-height: 1.1;
+  letter-spacing: -1.2px;
+}
+
+.tool-title span {
+  color: var(--color-accent);
+}
+
+.tool-subtitle {
+  font-size: 1.2rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  font-weight: 500;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .tool-header {
+    padding: 40px 16px;
+  }
+  
+  .tool-title {
+    font-size: 2.2rem;
+  }
+  
+  .tool-subtitle {
+    font-size: 1.1rem;
+  }
+}

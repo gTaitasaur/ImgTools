@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { WatermarkModule } from '../../../components/Watermark/WatermarkModule';
-import './WatermarkTool.css';
+import { Workspace } from '../../../components/UI/Workspace/Workspace';
 
 export const WatermarkTool: React.FC = () => {
   const [photos, setPhotos] = useState<File[]>([]);
@@ -15,26 +15,22 @@ export const WatermarkTool: React.FC = () => {
   };
 
   return (
-    <div className="tool-page-container fade-in">
-      <nav className="tool-nav">
-        <Link to="/" className="back-link">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          Volver al Inicio
-        </Link>
-      </nav>
-
+    <div className="home-container" style={{ paddingBottom: '80px' }}>
       <header className="tool-header">
-        <h1>Poner Marca de Agua</h1>
-        <p>Protege tus fotos añadiendo tu logo o firma como marca de agua. Todo se procesa localmente en tu navegador para garantizar tu privacidad.</p>
+        <h1 className="tool-title">Poner Marca de <span>Agua a Fotos.</span></h1>
+        <p className="tool-subtitle">
+          Protege tus fotos añadiendo tu logo o firma como marca de agua. 
+          Todo se procesa localmente en tu navegador para garantizar tu privacidad.
+        </p>
       </header>
 
-      <WatermarkModule
-        photos={photos}
-        onAddPhotos={handleAddPhotos}
-        onClearAll={handleClearAll}
-      />
+      <Workspace>
+        <WatermarkModule
+          photos={photos}
+          onAddPhotos={handleAddPhotos}
+          onClearAll={handleClearAll}
+        />
+      </Workspace>
     </div>
   );
 };

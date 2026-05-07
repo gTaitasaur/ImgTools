@@ -1,20 +1,26 @@
 import { CropperModule } from '../../../components/Cropper/CropperModule';
+import { Workspace } from '../../../components/UI/Workspace/Workspace';
 import { useState } from 'react';
 
 export const AspectRatioTool: React.FC = () => {
   const [currentImage, setCurrentImage] = useState<string | null>(null);
 
   return (
-    <div className="home-container" style={{ paddingTop: '20px' }}>
-      <section className="hero-section" style={{ marginBottom: '40px' }}>
-        <h1 className="hero-title">Recortar Fotos para <span>Redes Sociales.</span></h1>
-        <p className="hero-subtitle">Adapta tus imágenes al tamaño exacto de Instagram, Facebook o Pinterest. Recorta online, sin perder calidad y con 100% de privacidad garantizada.</p>
-      </section>
+    <div className="home-container" style={{ paddingBottom: '80px' }}>
+      <header className="tool-header">
+        <h1 className="tool-title">Recorte y <span>Aspect Ratio.</span></h1>
+        <p className="tool-subtitle">
+          Ajusta tus fotos a los formatos ideales para Instagram, TikTok o Web. 
+          Todo el procesamiento es local y privado en tu navegador.
+        </p>
+      </header>
 
-      <CropperModule 
-        imageUrl={currentImage} 
-        onImageSelected={(url) => setCurrentImage(url)}
-      />
+      <Workspace>
+        <CropperModule 
+          imageUrl={currentImage} 
+          onImageSelected={(url) => setCurrentImage(url)}
+        />
+      </Workspace>
     </div>
   );
 };

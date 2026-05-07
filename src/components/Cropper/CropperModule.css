@@ -9,19 +9,10 @@
 @import 'react-image-crop/dist/ReactCrop.css';
 
 .cropper-stage {
-  /* Fondo estilo papel limpio dentro del cuaderno */
-  background-color: var(--color-bg-surface);
-  border: 3px solid var(--color-text-primary);
-  /* Efecto dibujado a mano */
-  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
-  padding: var(--spacing-xl) var(--spacing-md);
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  animation: fadeIn 0.4s ease-out;
-  box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.05);
-  position: relative;
 }
 
 @keyframes fadeIn {

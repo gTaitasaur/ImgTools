@@ -3,17 +3,11 @@
    ══════════════════════════════════════════════════ */
 
 .b64-stage {
-  background-color: var(--color-bg-surface);
-  border: 3px solid var(--color-text-primary);
-  border-radius: 15px 255px 15px 225px / 255px 15px 225px 15px;
-  padding: var(--spacing-xl) var(--spacing-md);
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 900px;
-  margin: 0 auto var(--spacing-xxl);
-  box-sizing: border-box;
-  box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.05);
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 /* ── Pestañas ── */

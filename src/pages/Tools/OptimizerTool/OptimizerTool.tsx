@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { OptimizerModule } from '../../../components/Optimizer/OptimizerModule';
+import { Workspace } from '../../../components/UI/Workspace/Workspace';
 
 export const OptimizerTool: React.FC = () => {
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
@@ -11,17 +12,22 @@ export const OptimizerTool: React.FC = () => {
   };
 
   return (
-    <div className="home-container" style={{ paddingTop: '20px' }}>
-      <section className="hero-section" style={{ marginBottom: '40px' }}>
-        <h1 className="hero-title">Comprimir Imágenes <span>sin Perder Calidad.</span></h1>
-        <p className="hero-subtitle">Reduce drásticamente el peso de tus fotos JPG, PNG o WebP. Mejora la velocidad de tu web y tu SEO con nuestra compresión local segura.</p>
-      </section>
+    <div className="home-container" style={{ paddingBottom: '80px' }}>
+      <header className="tool-header">
+        <h1 className="tool-title">Comprimir Imágenes <span>sin Perder Calidad.</span></h1>
+        <p className="tool-subtitle">
+          Reduce drásticamente el peso de tus fotos JPG, PNG o WebP. 
+          Mejora la velocidad de tu web y tu SEO con nuestra compresión local segura.
+        </p>
+      </header>
 
-      <OptimizerModule 
-        originalUrl={currentUrl}
-        originalFile={currentFile}
-        onImageSelected={handleImageSelected}
-      />
+      <Workspace>
+        <OptimizerModule 
+          originalUrl={currentUrl}
+          originalFile={currentFile}
+          onImageSelected={handleImageSelected}
+        />
+      </Workspace>
     </div>
   );
 };

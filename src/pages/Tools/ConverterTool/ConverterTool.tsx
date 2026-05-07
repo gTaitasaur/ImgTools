@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ConverterModule } from '../../../components/Converter/ConverterModule';
+import { Workspace } from '../../../components/UI/Workspace/Workspace';
 
 export const ConverterTool: React.FC = () => {
   const [activeFiles, setActiveFiles] = useState<File[]>([]);
@@ -13,17 +14,22 @@ export const ConverterTool: React.FC = () => {
   };
 
   return (
-    <div className="home-container" style={{ paddingTop: '20px' }}>
-      <section className="hero-section" style={{ marginBottom: '40px' }}>
-        <h1 className="hero-title">Convertidor de <span>Formatos de Imagen.</span></h1>
-        <p className="hero-subtitle">Cambia el formato de tus fotos a WebP, AVIF, JPG o PNG masivamente. Todo se procesa en tu navegador para proteger tus archivos originales.</p>
-      </section>
+    <div className="home-container" style={{ paddingBottom: '80px' }}>
+      <header className="tool-header">
+        <h1 className="tool-title">Convertidor de <span>Formatos.</span></h1>
+        <p className="tool-subtitle">
+          Cambia el formato de tus fotos a WebP, AVIF, JPG o PNG masivamente. 
+          Todo se procesa en tu navegador para proteger tus archivos originales.
+        </p>
+      </header>
 
-      <ConverterModule 
-        files={activeFiles} 
-        onAddFiles={handleAddFiles} 
-        onClearAll={handleClearAll}
-      />
+      <Workspace>
+        <ConverterModule 
+          files={activeFiles} 
+          onAddFiles={handleAddFiles} 
+          onClearAll={handleClearAll}
+        />
+      </Workspace>
     </div>
   );
 };
