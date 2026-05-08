@@ -68,11 +68,15 @@ export const ImagePreviewCanvas: React.FC<ImagePreviewCanvasProps> = ({
 
   const isRotated90 = Math.abs(rotate / 90) % 2 === 1;
 
-  // Lógica crítica: Al estar rotada 90/270°, los límites se intercambian
+  // Lógica crítica: Al estar rotada 90/270°, los límites se intercambian visualmente.
+  // El elemento DOM (<img>) debe ser contenido en un rectángulo con dimensiones invertidas
+  // para que, tras la rotación, encaje perfectamente en el contenedor.
   const finalImageStyle: React.CSSProperties = {
     ...imageStyle,
-    width: isRotated90 ? `${containerDim.h}px` : '100%',
-    height: isRotated90 ? `${containerDim.w}px` : '100%',
+    maxWidth: isRotated90 ? `${containerDim.h}px` : '100%',
+    maxHeight: isRotated90 ? `${containerDim.w}px` : '100%',
+    width: 'auto',
+    height: 'auto',
     transformOrigin: 'center center',
   };
 

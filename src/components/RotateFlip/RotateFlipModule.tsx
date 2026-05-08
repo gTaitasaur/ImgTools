@@ -16,7 +16,6 @@ export const RotateFlipModule: React.FC<RotateFlipModuleProps> = ({
   originalUrl,
   originalFile,
   onImageSelected,
-  onClear,
 }) => {
   const [params, setParams] = useState<RotateFlipParams>({
     rotation: 0,
@@ -54,11 +53,7 @@ export const RotateFlipModule: React.FC<RotateFlipModuleProps> = ({
   };
 
   const handleFlipHorizontal = () => {
-    setParams(prev => {
-      // Si la imagen está rotada 90 o 270 grados, el flip horizontal visualmente es un flip vertical de la imagen base.
-      // Pero como estamos aplicando el flip EN CASCADA en CSS, solo invertimos el booleano.
-      return { ...prev, flipHorizontal: !prev.flipHorizontal };
-    });
+    setParams(prev => ({ ...prev, flipHorizontal: !prev.flipHorizontal }));
   };
 
   const handleFlipVertical = () => {
@@ -114,101 +109,113 @@ export const RotateFlipModule: React.FC<RotateFlipModuleProps> = ({
   const hasChanges = (params.rotation % 360) !== 0 || params.flipHorizontal || params.flipVertical;
 
   return (
-    <div className="rotate-flip-stage">
-      <div className="rotate-flip-hero">
-        
-        {/* Acciones Superiores */}
-        <div className="rotate-flip-header-actions">
-          <input 
-            type="file" 
-            accept="image/*" 
-            ref={fileInputRef} 
-            style={{ display: 'none' }} 
-            onChange={(e) => {
-              if (e.target.files && e.target.files.length > 0) {
-                processNewFile(e.target.files[0]);
-              }
-            }}
-          />
-          <button 
-            className="btn-secondary" 
-            onClick={() => fileInputRef.current?.click()} 
-            disabled={isProcessing}
-          >
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18" style={{marginRight: 6, verticalAlign: 'text-bottom'}}>
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-            Cambiar Imagen
-          </button>
-          
-          <button className="btn-clear-all" onClick={onClear} disabled={isProcessing}>
-            Quitar
-          </button>
-        </div>
-
-        {/* Zona de Vista Previa con el nuevo componente estándar */}
-        <div className="rotate-flip-preview-container">
-          <ImagePreviewCanvas 
-            imageUrl={originalUrl} 
-            maxHeight="450px"
-            imageStyle={previewStyle}
-            rotate={params.rotation}
-            alt="Vista previa de rotación"
-          />
-        </div>
-
-        {/* Controles de Herramientas */}
-        <div className="rotate-flip-controls">
-          <div className="control-group">
-            <span className="control-label">Rotar</span>
-            <div className="button-row">
-              <button className="tool-btn" onClick={handleRotateLeft} disabled={isProcessing} title="Rotar a la izquierda">
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
-                </svg>
-                <span>-90°</span>
-              </button>
-              <button className="tool-btn" onClick={handleRotateRight} disabled={isProcessing} title="Rotar a la derecha">
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6" />
-                </svg>
-                <span>+90°</span>
-              </button>
-            </div>
-          </div>
-
-          <div className="control-divider"></div>
-
-          <div className="control-group">
-            <span className="control-label">Efecto Espejo</span>
-            <div className="button-row">
-              <button className={`tool-btn ${params.flipHorizontal ? 'active' : ''}`} onClick={handleFlipHorizontal} disabled={isProcessing} title="Voltear horizontalmente">
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                </svg>
-                <span>Horizontal</span>
-              </button>
-              <button className={`tool-btn ${params.flipVertical ? 'active' : ''}`} onClick={handleFlipVertical} disabled={isProcessing} title="Voltear verticalmente">
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ transform: 'rotate(90deg)' }}>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                </svg>
-                <span>Vertical</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      {/* Botón de Acción Principal */}
-      <div className="rotate-flip-actions">
+    <div className="rotate-flip-container fade-in">
+      {/* Barra de herramientas superior (Acciones secundarias) */}
+      <div className="rf-top-bar">
         <button 
-          className={`btn-success ${!hasChanges ? 'no-changes' : ''}`}
-          onClick={handleDownload}
+          className="btn-text-action" 
+          onClick={() => fileInputRef.current?.click()} 
           disabled={isProcessing}
         >
-          {isProcessing ? 'Procesando imagen...' : (!hasChanges ? 'Descargar Original' : 'Descargar Imagen Modificada')}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          Subir otra foto
         </button>
+        <input 
+          type="file" 
+          accept="image/*" 
+          ref={fileInputRef} 
+          style={{ display: 'none' }} 
+          onChange={(e) => {
+            if (e.target.files && e.target.files.length > 0) {
+              processNewFile(e.target.files[0]);
+            }
+          }}
+        />
+      </div>
+
+      <div className="rf-main-layout">
+        {/* Lado Izquierdo: El Visor de Imagen */}
+        <div className="rf-workspace">
+          <div className="rf-preview-card">
+            <ImagePreviewCanvas 
+              imageUrl={originalUrl} 
+              maxHeight="60vh"
+              imageStyle={previewStyle}
+              rotate={params.rotation}
+              alt="Vista previa de rotación"
+            />
+          </div>
+        </div>
+
+        {/* Lado Derecho: Controles y Acciones */}
+        <aside className="rf-sidebar">
+          <div className="rf-controls-section">
+            <div className="rf-control-group">
+              <h4 className="rf-control-title">Orientación</h4>
+              <div className="rf-button-grid">
+                <button className="rf-tool-btn" onClick={handleRotateLeft} disabled={isProcessing} title="Rotar 90° izquierda">
+                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                  </svg>
+                  <span>Rotar -90°</span>
+                </button>
+                <button className="rf-tool-btn" onClick={handleRotateRight} disabled={isProcessing} title="Rotar 90° derecha">
+                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6" />
+                  </svg>
+                  <span>Rotar +90°</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="rf-control-group">
+              <h4 className="rf-control-title">Efecto Espejo</h4>
+              <div className="rf-button-grid">
+                <button className={`rf-tool-btn ${params.flipHorizontal ? 'is-active' : ''}`} onClick={handleFlipHorizontal} disabled={isProcessing}>
+                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                  </svg>
+                  <span>Horizontal</span>
+                </button>
+                <button className={`rf-tool-btn ${params.flipVertical ? 'is-active' : ''}`} onClick={handleFlipVertical} disabled={isProcessing}>
+                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ transform: 'rotate(90deg)' }}>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                  </svg>
+                  <span>Vertical</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="rf-actions-panel">
+            <button 
+              className={`btn-download-primary ${!hasChanges ? 'is-original' : ''}`}
+              onClick={handleDownload}
+              disabled={isProcessing}
+            >
+              {isProcessing ? (
+                <>
+                  <div className="btn-spinner"></div>
+                  Procesando...
+                </>
+              ) : (
+                <>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '10px' }}>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                  {!hasChanges ? 'Descargar Original' : 'Descargar Imagen'}
+                </>
+              )}
+            </button>
+            <p className="rf-legal-hint">Procesamiento local: tus datos están seguros.</p>
+          </div>
+        </aside>
       </div>
     </div>
   );
