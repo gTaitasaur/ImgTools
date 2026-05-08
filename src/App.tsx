@@ -15,11 +15,14 @@ import { NotFound } from './components/Errors/NotFound';
 import { ToastProvider } from './components/Errors/ToastContext';
 import './App.css'; // Mantenemos variables de envoltura si quedan
 
+import { ToastContainer } from './components/UI/Toast/ToastContainer';
+
 const App: React.FC = () => {
   return (
     <BrowserRouter>
       <ToastProvider>
         <ErrorBoundary>
+          <ToastContainer />
           <Routes>
             <Route path="/" element={<MainLayout />}>
               {/* Index Route es el Home Page */}

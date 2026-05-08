@@ -1,53 +1,73 @@
-import React, { useState, useRef, useCallback } from 'react';
-import ReactCrop, { Crop, PixelCrop } from 'react-image-crop';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import ReactCrop, { Crop, PixelCrop, centerCrop, makeAspectCrop, convertToPixelCrop } from 'react-image-crop';
 import { AspectRatioControls } from './AspectRatioControls';
 import { exportCroppedImage } from '../../utils/imageExport';
 import { validateImageFile } from '../../utils/fileUpload';
-import './CropperModule.css';
-
 import { DragAndDrop } from '../DragAndDrop/DragAndDrop';
+import { ImagePreviewCanvas } from '../UI/ImagePreviewCanvas/ImagePreviewCanvas';
+import { showToast } from '../UI/Toast/toastManager';
+import './CropperModule.css';
 
 interface CropperModuleProps {
   imageUrl: string | null;
   onImageSelected: (url: string, file: File) => void;
 }
 
-// Función auxiliar para forzar el recorte al máximo espacio posible sin salirse de la imagen
-function centerAspectCrop(
-  mediaWidth: number,
-  mediaHeight: number,
-  aspect: number
-): PixelCrop {
-  let cropWidth = mediaWidth;
-  let cropHeight = mediaWidth / aspect;
-
-  if (cropHeight > mediaHeight) {
-    cropHeight = mediaHeight;
-    cropWidth = mediaHeight * aspect;
-  }
-
-  return {
-    unit: 'px',
-    x: (mediaWidth - cropWidth) / 2,
-    y: (mediaHeight - cropHeight) / 2,
-    width: cropWidth,
-    height: cropHeight,
-  };
-}
-
-function fullFreeCrop(mediaWidth: number, mediaHeight: number): PixelCrop {
-  return { unit: 'px', x: 0, y: 0, width: mediaWidth, height: mediaHeight };
-}
-
 export const CropperModule: React.FC<CropperModuleProps> = ({ imageUrl, onImageSelected }) => {
+  // Usamos unidades en % para el estado del crop para que sea responsivo nativamente
   const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
   const [aspect, setAspect] = useState<number | undefined>(undefined);
   const [isExporting, setIsExporting] = useState<boolean>(false);
   const [isDragOver, setIsDragOver] = useState<boolean>(false);
   
+  // Dimensiones para responsividad
+  const [naturalDim, setNaturalDim] = useState({ w: 0, h: 0 });
+  const [renderDim, setRenderDim] = useState({ w: 0, h: 0 });
+  const [containerSize, setContainerSize] = useState({ w: 0, h: 0 });
+
+  const stageRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // 1. Detectar tamaño del contenedor
+  useEffect(() => {
+    if (!stageRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerSize({ w: entry.contentRect.width, h: entry.contentRect.height });
+      }
+    });
+    observer.observe(stageRef.current);
+    return () => observer.disconnect();
+  }, [imageUrl]);
+
+  // 2. Calcular dimensiones renderizadas (Object-fit: contain manual)
+  useEffect(() => {
+    if (naturalDim.w === 0 || containerSize.w === 0) return;
+
+    const ratio = Math.min(containerSize.w / naturalDim.w, containerSize.h / naturalDim.h);
+    const newRenderDim = {
+      w: Math.floor(naturalDim.w * ratio),
+      h: Math.floor(naturalDim.h * ratio)
+    };
+
+    setRenderDim(newRenderDim);
+
+    // Si no hay crop, inicializamos uno al máximo tamaño posible
+    if (!crop && newRenderDim.w > 0) {
+      const initialCrop = aspect 
+        ? centerCrop(makeAspectCrop({ unit: '%', width: 100 }, aspect, newRenderDim.w, newRenderDim.h), newRenderDim.w, newRenderDim.h)
+        : { unit: '%' as const, x: 0, y: 0, width: 100, height: 100 };
+      
+      setCrop(initialCrop);
+      // Actualizamos el crop completado para permitir descarga inmediata
+      setCompletedCrop(convertToPixelCrop(initialCrop, newRenderDim.w, newRenderDim.h));
+    } else if (crop && newRenderDim.w > 0) {
+      // Si ya hay un crop (en %), actualizamos el completedCrop (en px) para la nueva escala
+      setCompletedCrop(convertToPixelCrop(crop, newRenderDim.w, newRenderDim.h));
+    }
+  }, [containerSize, naturalDim, aspect]);
 
   const processNewFile = (file: File) => {
     const validation = validateImageFile(file);
@@ -57,6 +77,10 @@ export const CropperModule: React.FC<CropperModuleProps> = ({ imageUrl, onImageS
     }
     const url = URL.createObjectURL(file);
     onImageSelected(url, file);
+    setNaturalDim({ w: 0, h: 0 });
+    setRenderDim({ w: 0, h: 0 });
+    setCrop(undefined);
+    setCompletedCrop(null);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -64,57 +88,40 @@ export const CropperModule: React.FC<CropperModuleProps> = ({ imageUrl, onImageS
     setIsDragOver(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       processNewFile(e.dataTransfer.files[0]);
-      e.dataTransfer.clearData();
     }
   };
 
-  // Cuando la imagen se carga, cuadramos el crop por defecto
   const onImageLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
-    const { width, height } = e.currentTarget;
-    const initialCrop = aspect 
-      ? centerAspectCrop(width, height, aspect)
-      : fullFreeCrop(width, height);
-      
-    setCrop(initialCrop);
-    // Soluciona el problema de no poder descargar sin mover primero
-    setCompletedCrop(initialCrop); 
-  }, [aspect]);
+    const { naturalWidth, naturalHeight } = e.currentTarget;
+    setNaturalDim({ w: naturalWidth, h: naturalHeight });
+  }, []);
 
   const handleRatioChange = (newAspect: number | undefined) => {
     setAspect(newAspect);
-    if (imgRef.current) {
-      const { width, height } = imgRef.current;
+    if (renderDim.w > 0) {
       const newCrop = newAspect 
-        ? centerAspectCrop(width, height, newAspect)
-        : fullFreeCrop(width, height);
-        
+        ? centerCrop(makeAspectCrop({ unit: '%', width: 100 }, newAspect, renderDim.w, renderDim.h), renderDim.w, renderDim.h)
+        : { unit: '%' as const, x: 0, y: 0, width: 100, height: 100 };
       setCrop(newCrop);
-      // Soluciona el problema de no poder descargar tras clickear botón
-      setCompletedCrop(newCrop); 
+      setCompletedCrop(convertToPixelCrop(newCrop, renderDim.w, renderDim.h));
     }
   };
 
   const handleDownload = async () => {
     if (!completedCrop || !imgRef.current) return;
-    
-    // Evitamos clics dobles fastidiosos
-    if(isExporting) return;
+    if (isExporting) return;
     setIsExporting(true);
 
     try {
       const localUrl = await exportCroppedImage(imgRef.current, completedCrop);
-      
-      // Auto-descargamos creando un tag <a> efímero
       const a = document.createElement('a');
       a.href = localUrl;
       a.download = `recorte-${Date.now()}.jpg`;
       a.click();
-      
-      // Limpiamos la memoria
       URL.revokeObjectURL(localUrl);
     } catch (error) {
-      console.error('Error exportando la imagen: ', error);
-      alert('Hubo un problema procesando el recorte.');
+      console.error('Error exportando:', error);
+      showToast('No se pudo procesar la imagen. Asegúrate de que el archivo aún sea accesible.', 'error');
     } finally {
       setIsExporting(false);
     }
@@ -125,66 +132,112 @@ export const CropperModule: React.FC<CropperModuleProps> = ({ imageUrl, onImageS
   }
 
   return (
-    <div className="cropper-stage">
-      <AspectRatioControls 
-        currentRatio={aspect} 
-        disabled={!imageUrl}
-        onChangeRatio={handleRatioChange} 
+    <div className="cropper-container fade-in">
+      <input 
+        type="file" 
+        accept="image/*" 
+        ref={fileInputRef} 
+        style={{ display: 'none' }} 
+        onChange={(e) => {
+          if (e.target.files && e.target.files.length > 0) {
+            processNewFile(e.target.files[0]);
+          }
+        }}
       />
 
-      <div 
-        className="cropper-image-wrapper" 
-        style={{
-          border: isDragOver ? '3px dashed var(--color-accent)' : undefined,
-          position: 'relative'
-        }}
-        onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
-        onDragLeave={(e) => { e.preventDefault(); setIsDragOver(false); }}
-        onDrop={handleDrop}
-      >
-        <input 
-          type="file" 
-          accept="image/*" 
-          ref={fileInputRef} 
-          style={{ display: 'none' }} 
-          onChange={(e) => {
-            if (e.target.files && e.target.files.length > 0) {
-              processNewFile(e.target.files[0]);
-            }
-          }}
-        />
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', marginBottom: '12px' }}>
-          <button 
-            className="btn-secondary-hand" 
-            onClick={() => fileInputRef.current?.click()} 
-            disabled={isExporting}
-          >
-            Seleccionar Otra Foto
-          </button>
-        </div>
-        <ReactCrop
-          crop={crop}
-          onChange={(_, percentCrop) => setCrop(percentCrop)}
-          onComplete={(c) => setCompletedCrop(c)}
-          aspect={aspect}
-          keepSelection
-        >
-          <img 
-            ref={imgRef} 
-            src={imageUrl} 
-            alt="Para recortar" 
-            onLoad={onImageLoad} 
-          />
-        </ReactCrop>
+      {/* Barra superior de acciones rápidas */}
+      <div className="cropper-top-bar">
+        <button className="btn-text-action" onClick={() => fileInputRef.current?.click()}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          Subir Otra Foto
+        </button>
       </div>
 
-      <button 
-        className="btn-download" 
-        onClick={handleDownload}
-        disabled={!completedCrop || isExporting}
-      >
-        {isExporting ? 'Procesando...' : 'Descargar Imagen Recortada'}
-      </button>
+      <div className="cropper-main-layout">
+        {/* Visor de Imagen (Lado Izquierdo) */}
+        <div className="cropper-workspace">
+          <ImagePreviewCanvas 
+            imageUrl={imageUrl} 
+            maxHeight="65vh"
+            className={isDragOver ? 'cropper-drag-over' : ''}
+          >
+            <div 
+              ref={stageRef}
+              className="cropper-canvas-inner"
+              onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
+              onDragLeave={(e) => { e.preventDefault(); setIsDragOver(false); }}
+              onDrop={handleDrop}
+            >
+              {renderDim.w > 0 && (
+                <ReactCrop
+                  crop={crop}
+                  onChange={(c) => setCrop(c)}
+                  onComplete={(c) => setCompletedCrop(c)}
+                  aspect={aspect}
+                  keepSelection
+                  style={{ width: renderDim.w, height: renderDim.h }}
+                >
+                  <img 
+                    ref={imgRef} 
+                    src={imageUrl} 
+                    alt="Imagen para recortar" 
+                    style={{ width: renderDim.w, height: renderDim.h, display: 'block' }}
+                    onLoad={onImageLoad} 
+                  />
+                </ReactCrop>
+              )}
+
+              {/* Imagen invisible de apoyo para dimensiones iniciales */}
+              {renderDim.w === 0 && (
+                <img 
+                  src={imageUrl} 
+                  alt="Loading" 
+                  style={{ opacity: 0, position: 'absolute' }} 
+                  onLoad={onImageLoad} 
+                />
+              )}
+            </div>
+          </ImagePreviewCanvas>
+        </div>
+
+        {/* Panel de Controles (Lado Derecho) */}
+        <aside className="cropper-sidebar">
+          <AspectRatioControls 
+            currentRatio={aspect} 
+            disabled={!imageUrl}
+            onChangeRatio={handleRatioChange} 
+          />
+
+          <div className="cropper-actions-panel">
+            <button 
+              className="btn-download-primary" 
+              onClick={handleDownload}
+              disabled={!completedCrop || isExporting}
+            >
+              {isExporting ? (
+                <>
+                  <div className="btn-spinner"></div>
+                  Procesando...
+                </>
+              ) : (
+                <>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '10px' }}>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                  Descargar Recorte
+                </>
+              )}
+            </button>
+            <p className="cropper-legal-hint">Máxima calidad. 100% privado.</p>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 };

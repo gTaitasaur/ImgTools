@@ -13,24 +13,37 @@ export const AspectRatioControls: React.FC<AspectRatioControlsProps> = ({
   onChangeRatio,
 }) => {
   return (
-    <div className="aspect-controls-container" style={{ opacity: disabled ? 0.4 : 1, pointerEvents: disabled ? 'none' : 'auto' }}>
-      <h3 className="aspect-controls-title">Formato</h3>
-      <div className="aspect-buttons">
+    <div className={`aspect-ratio-selector ${disabled ? 'is-disabled' : ''}`}>
+      <div className="aspect-ratio-header">
+        <h3 className="aspect-ratio-title">Selecciona un formato</h3>
+        <span className="aspect-ratio-hint">Ajusta tu imagen a las medidas ideales</span>
+      </div>
+      
+      <div className="aspect-ratio-grid">
         {ASPECT_RATIOS.map((option) => (
           <button
             key={option.label}
-            className={`btn-aspect ${currentRatio === option.value ? 'active' : ''}`}
+            className={`aspect-chip ${currentRatio === option.value ? 'is-active' : ''}`}
             onClick={() => onChangeRatio(option.value)}
             disabled={disabled}
+            title={option.subLabel}
           >
-            {option.icon && (
-              <svg className="aspect-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d={option.icon} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            )}
-            <div className="aspect-btn-text">
-              <span className="aspect-label">{option.label}</span>
-              {option.subLabel && <span className="aspect-sublabel">{option.subLabel}</span>}
+            <div className="aspect-chip-icon-wrapper">
+              {option.icon ? (
+                <svg className="aspect-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d={option.icon} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              ) : (
+                <div className="aspect-chip-icon-placeholder">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                  </svg>
+                </div>
+              )}
+            </div>
+            <div className="aspect-chip-info">
+              <span className="aspect-chip-label">{option.label}</span>
+              <span className="aspect-chip-ratio">{option.subLabel}</span>
             </div>
           </button>
         ))}

@@ -1,264 +1,279 @@
 /* ==========================================================================
-   CROPPER MODULE - Temática "Cuaderno de Clases"
-   
-   Adaptamos el editor de fotos para que parezca una mesa de trabajo sobre
-   el cuaderno, usando bordes asimétricos y texturas de lápiz.
+   CROPPER MODULE - Estética Pixetide Ligera & Profesional
    ========================================================================== */
 
-/* Traemos la base css de la librería */
 @import 'react-image-crop/dist/ReactCrop.css';
 
-.cropper-stage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.cropper-container {
   width: 100%;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.cropper-image-wrapper {
-  max-width: 100%;
-  max-height: 65vh;
-  margin-bottom: var(--spacing-lg);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  /* El borde y fondo se eliminan para normalizar con el Workspace */
-  padding: 0;
+  gap: var(--spacing-md);
 }
 
-/* Alterando react-image-crop para que las líneas parezcan lápiz */
-.ReactCrop {
-  max-width: 100%;
-  max-height: 60vh;
+/* Barra Superior */
+.cropper-top-bar {
   display: flex;
-  justify-content: center;
-  overflow: hidden; /* IMPORTANTE: Recorta la sombra para que no se escape a toda la página */
+  justify-content: flex-end;
+  margin-bottom: var(--spacing-sm);
 }
 
-.ReactCrop__image {
-  max-width: 100%;
-  max-height: 60vh;
-  object-fit: contain;
-  display: block;
-}
-
-/* Selección del recorte con estilo de trazo manual */
-.ReactCrop__crop-selection {
-  border: 2px solid var(--color-accent) !important;
-  /* La sombra ahora se queda dentro de .ReactCrop gracias al overflow: hidden */
-  box-shadow: 0 0 0 9999em rgba(255, 255, 255, 0.4) !important; 
-}
-
-/* Regla de los tercios con estilo lápiz suave */
-.ReactCrop__crop-selection::before,
-.ReactCrop__crop-selection::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  opacity: 0.3;
-}
-
-.ReactCrop__crop-selection::before {
-  border-top: 1px dashed var(--color-text-primary);
-  border-bottom: 1px dashed var(--color-text-primary);
-  height: 33.33%;
-  top: 33.33%;
-}
-
-.ReactCrop__crop-selection::after {
-  border-left: 1px dashed var(--color-text-primary);
-  border-right: 1px dashed var(--color-text-primary);
-  width: 33.33%;
-  left: 33.33%;
-}
-
-/* Tiradores (Corners) estilo "borrador" o "pin" */
-.ReactCrop__drag-handle {
-  width: 12px !important;
-  height: 12px !important;
-  background-color: var(--color-bg-main) !important;
-  border: 2px solid var(--color-accent) !important;
-  border-radius: 50%;
-}
-
-/* Botonera de aspecto */
-.aspect-controls-container {
+.btn-text-action {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-xl);
-  width: 100%;
-}
-
-.aspect-controls-title {
-  font-family: var(--font-handwriting);
+  background: transparent;
+  border: 1.5px solid var(--color-text-primary);
   color: var(--color-text-primary);
-  font-size: 1.8rem;
-  margin-bottom: var(--spacing-xs);
-  font-weight: 400;
-}
-
-.aspect-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-sm);
-  justify-content: center;
-}
-
-/* Botones de formato con estilo crayón */
-.btn-aspect {
-  background-color: var(--color-bg-main);
-  color: var(--color-text-secondary);
-  border: 2px solid var(--color-text-primary);
-  padding: 12px;
-  border-radius: 15px 50px 30px 5px / 50px 20px 10px 40px;
+  font-family: var(--font-handwriting);
+  font-size: 1rem;
+  padding: 6px 14px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  min-width: 120px;
-  flex: 1 1 120px; /* Permite que crezcan un poco */
-  max-width: 180px;
 }
 
-.aspect-btn-icon {
-  width: 40px; /* Íconos más grandes */
-  height: 40px;
-  opacity: 0.8;
-  transition: transform 0.2s;
+.btn-text-action:hover {
+  background-color: var(--color-bg-surface);
+  transform: rotate(-1deg) translateY(-1px);
+  border-color: var(--color-accent);
   color: var(--color-accent);
 }
 
-.aspect-btn-text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
+/* Layout Principal */
+.cropper-main-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: var(--spacing-xl);
+  align-items: start;
 }
 
-.aspect-label {
+.cropper-workspace {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.cropper-canvas-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cropper-drag-over {
+  border-color: var(--color-accent) !important;
+  background-color: rgba(37, 99, 235, 0.05) !important;
+}
+
+/* Sidebar / Controles */
+.cropper-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  background-color: #fefefe;
+  padding: var(--spacing-lg);
+  border: 2px solid var(--color-text-primary);
+  border-radius: 20px;
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.05);
+}
+
+/* Selector de Ratio (Aspect Ratio) */
+.aspect-ratio-selector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.aspect-ratio-header {
+  border-bottom: 1px dashed #e5e5e5;
+  padding-bottom: var(--spacing-sm);
+}
+
+.aspect-ratio-title {
   font-family: var(--font-handwriting);
-  font-weight: 400;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   color: var(--color-text-primary);
+  margin: 0;
   line-height: 1;
 }
 
-.aspect-sublabel {
-  font-family: var(--font-handwriting);
-  font-size: 1rem;
-  opacity: 0.8;
+.aspect-ratio-hint {
+  font-size: 0.85rem;
   color: var(--color-text-secondary);
-  text-align: center;
-  max-width: 100%;
-  line-height: 1.2;
+  font-weight: 500;
 }
 
-.btn-aspect:hover .aspect-btn-icon {
-  transform: scale(1.15);
-  opacity: 1;
+.aspect-ratio-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
 }
 
-.btn-aspect.active .aspect-btn-icon {
-  opacity: 1;
-  stroke-width: 2.5px;
-  color: white; /* Corregido: para que no desaparezca sobre el fondo azul */
+.aspect-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px;
+  background-color: white;
+  border: 1.5px solid #e5e5e5;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 6px;
 }
 
-.btn-aspect:hover {
-  transform: rotate(1deg) scale(1.05);
-  color: var(--color-text-primary);
+.aspect-chip:hover {
   border-color: var(--color-accent);
+  background-color: rgba(37, 99, 235, 0.02);
+  transform: translateY(-2px);
 }
 
-.btn-aspect.active {
+.aspect-chip.is-active {
+  border-color: var(--color-accent);
+  background-color: rgba(37, 99, 235, 0.05);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+}
+
+.aspect-chip-icon-wrapper {
+  color: var(--color-text-secondary);
+  transition: color 0.2s;
+}
+
+.aspect-chip.is-active .aspect-chip-icon-wrapper {
+  color: var(--color-accent);
+}
+
+.aspect-chip-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.aspect-chip-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.aspect-chip-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.aspect-chip-ratio {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+/* Panel de Acciones Finales */
+.cropper-actions-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-top: auto;
+}
+
+.btn-download-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   background-color: var(--color-accent);
   color: white;
-  border-color: var(--color-accent);
-  box-shadow: 4px 4px 0px rgba(37, 99, 235, 0.2);
-}
-
-.btn-aspect.active .aspect-label,
-.btn-aspect.active .aspect-sublabel {
-  color: white;
-}
-
-/* Botón prominente de descarga - Estilo Crayon */
-.btn-download {
-  background-color: var(--color-success);
-  color: white;
-  border: 3px solid #166534; /* Verde oscuro para el borde del crayón */
+  border: 2px solid var(--color-text-primary);
+  padding: 14px;
   font-family: var(--font-handwriting);
-  font-size: 1.5rem;
-  font-weight: 400;
-  padding: 12px 32px;
-  border-radius: 40px 10px 50px 20px / 10px 40px 20px 50px;
+  font-size: 1.4rem;
+  border-radius: 12px;
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 6px 6px 0px rgba(22, 101, 52, 0.1);
-  margin-top: var(--spacing-lg);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 4px 4px 0px var(--color-text-primary);
 }
 
-.btn-download:hover {
-  transform: translate(-2px, -2px) rotate(-1deg);
-  box-shadow: 8px 8px 0px rgba(22, 101, 52, 0.15);
+.btn-download-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--color-text-primary);
+  filter: brightness(1.1);
 }
 
-.btn-download:active {
-  transform: translate(0, 0);
-  box-shadow: 2px 2px 0px rgba(22, 101, 52, 0.1);
+.btn-download-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px var(--color-text-primary);
 }
 
-.btn-download:disabled {
-  background-color: #e5e7eb;
-  border-color: #9ca3af;
-  color: #6b7280;
-  cursor: not-allowed;
+.btn-download-primary:disabled {
+  background-color: #e5e5e5;
+  border-color: #d1d1d6;
+  color: #9ca3af;
   box-shadow: none;
+  cursor: not-allowed;
   transform: none;
 }
 
-/* Botón secundario para cambiar imagen */
-.btn-secondary-hand {
-  background-color: transparent;
-  border: 1.5px solid var(--color-text-primary);
-  font-family: var(--font-handwriting);
-  font-size: 1.1rem;
-  padding: 6px 16px;
-  border-radius: 12px 4px 10px 3px / 4px 12px 3px 10px;
-  cursor: pointer;
-  color: var(--color-text-primary);
-  transition: all 0.2s;
-}
-
-.btn-secondary-hand:hover {
-  background-color: #f8fafc;
-  transform: rotate(2deg);
-}
-
-.cropper-hint {
-  font-family: var(--font-handwriting);
+.cropper-legal-hint {
+  font-size: 0.75rem;
   color: var(--color-text-secondary);
-  font-size: 1.2rem;
-  margin-top: var(--spacing-md);
   text-align: center;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Ajustes de ReactCrop para que sea más "ligero" */
+.ReactCrop__crop-selection {
+  border: 2px solid var(--color-accent) !important;
+  box-shadow: 0 0 0 9999em rgba(255, 255, 255, 0.5) !important;
+}
+
+.ReactCrop__drag-handle {
+  width: 10px !important;
+  height: 10px !important;
+  background-color: white !important;
+  border: 2px solid var(--color-accent) !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Animación de carga en botón */
+.btn-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
+  margin-right: 10px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .cropper-main-layout {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  .cropper-sidebar {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .cropper-sidebar {
+    padding: var(--spacing-md);
+  }
+  
+  .aspect-ratio-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+  
+  .btn-download-primary {
+    font-size: 1.2rem;
+    padding: 12px;
+  }
 }

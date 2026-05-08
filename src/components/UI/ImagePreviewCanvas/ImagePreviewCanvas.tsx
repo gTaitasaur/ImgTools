@@ -17,6 +17,8 @@ interface ImagePreviewCanvasProps {
   imageStyle?: React.CSSProperties;
   /** Ángulo de rotación actual en grados */
   rotate?: number;
+  /** Componentes hijos (útil para inyectar Croppers o editores) */
+  children?: React.ReactNode;
 }
 
 /**
@@ -34,7 +36,8 @@ export const ImagePreviewCanvas: React.FC<ImagePreviewCanvasProps> = ({
   maxHeight = "500px",
   className = "",
   imageStyle = {},
-  rotate = 0
+  rotate = 0,
+  children
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerDim, setContainerDim] = useState({ w: 0, h: 0 });
@@ -89,14 +92,16 @@ export const ImagePreviewCanvas: React.FC<ImagePreviewCanvasProps> = ({
           <p>No se pudo cargar la imagen. El archivo podría estar corrupto o no ser válido.</p>
         </div>
       ) : (
-        <img 
-          src={imageUrl} 
-          alt={alt} 
-          className="image-preview-canvas__image" 
-          style={finalImageStyle}
-          loading="lazy"
-          onError={() => setHasError(true)}
-        />
+        children || (
+          <img 
+            src={imageUrl} 
+            alt={alt} 
+            className="image-preview-canvas__image" 
+            style={finalImageStyle}
+            loading="lazy"
+            onError={() => setHasError(true)}
+          />
+        )
       )}
     </div>
   );
