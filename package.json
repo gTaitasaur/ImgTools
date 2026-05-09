@@ -12,13 +12,16 @@
   "dependencies": {
     "@imagemagick/magick-wasm": "^0.0.40",
     "@imgly/background-removal": "^1.7.0",
+    "culori": "^4.0.2",
     "jszip": "^3.10.1",
+    "node-vibrant": "^4.0.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-image-crop": "^11.0.10",
     "react-router-dom": "^7.14.1"
   },
   "devDependencies": {
+    "@types/culori": "^4.0.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
