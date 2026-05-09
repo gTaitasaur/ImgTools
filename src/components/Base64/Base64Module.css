@@ -1,35 +1,114 @@
-/* ══════════════════════════════════════════════════
-   Base64 Module — Estilos School Notebook
-   ══════════════════════════════════════════════════ */
+/* ==========================================================================
+   BASE64 MODULE - Estética Pixetide Ligera (Senior UI)
+   ========================================================================== */
 
-.b64-stage {
-  display: flex;
-  flex-direction: column;
+.b64-main-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: var(--spacing-xl);
+  align-items: start;
+  min-width: 0;
   width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
 }
 
-/* ── Pestañas ── */
+/* ── Workspace (Lado Izquierdo) ── */
+.b64-workspace {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.b64-preview-card {
+  width: 100%;
+  background-color: transparent;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.b64-output-area {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.b64-textarea {
+  width: 100%;
+  min-height: 250px;
+  padding: var(--spacing-md);
+  border: 2px solid var(--color-text-primary);
+  border-radius: 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  resize: vertical;
+  color: var(--color-text-primary);
+  background-color: #fefefe;
+  box-sizing: border-box;
+  word-break: break-all;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.05);
+}
+
+.b64-textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1), 4px 4px 0px rgba(0,0,0,0.05);
+}
+
+.b64-decode-label {
+  font-family: var(--font-handwriting);
+  font-size: 1.4rem;
+  color: var(--color-text-primary);
+  font-weight: bold;
+}
+
+.b64-decode-error {
+  padding: 12px 16px;
+  background-color: #fef2f2;
+  border: 2px solid #fecaca;
+  border-radius: 12px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: #dc2626;
+  font-weight: 500;
+}
+
+/* ── Sidebar (Lado Derecho) ── */
+.b64-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  background-color: #fefefe;
+  padding: var(--spacing-lg);
+  border: 2px solid var(--color-text-primary);
+  border-radius: 20px;
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.05);
+}
 
 .b64-tabs {
   display: flex;
-  gap: 8px;
-  margin-bottom: var(--spacing-lg);
-  border-bottom: 2px dashed #e5e5e5;
-  padding-bottom: var(--spacing-md);
+  background-color: #f5f5f7;
+  border-radius: 12px;
+  padding: 4px;
+  border: 1px solid #e5e5e5;
 }
 
 .b64-tab {
+  flex: 1;
   display: flex;
   align-items: center;
-  gap: 6px;
-  flex: 1;
   justify-content: center;
-  padding: 10px 16px;
-  border: 2px solid #e5e5e5;
-  border-radius: 12px 4px 10px 3px / 4px 12px 3px 10px;
-  background-color: white;
+  gap: 6px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
   font-family: var(--font-handwriting);
   font-size: 1.1rem;
   color: var(--color-text-secondary);
@@ -38,177 +117,98 @@
 }
 
 .b64-tab:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-  background-color: rgba(0, 113, 227, 0.04);
+  color: var(--color-text-primary);
 }
 
 .b64-tab.active {
-  border-color: var(--color-accent);
-  background-color: var(--color-accent);
-  color: white;
-  font-weight: bold;
-  box-shadow: 0 3px 8px rgba(0, 113, 227, 0.2);
-}
-
-/* ── Contenido ── */
-
-.b64-content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-lg);
-}
-
-/* ── Codificar: Header con preview ── */
-
-.b64-encode-header {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-lg);
-  padding: var(--spacing-md);
-  border: 2px solid #e5e5e5;
-  border-radius: 12px;
-  background-color: #fafafa;
-}
-
-.b64-preview-thumb {
-  width: 100px;
-  height: 100px;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 2px solid #e5e5e5;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background-color: white;
-}
-
-.b64-preview-thumb img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+  color: var(--color-accent);
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .b64-file-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  min-width: 0;
+  gap: 8px;
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px dashed #e5e5e5;
 }
 
 .b64-filename {
   font-family: var(--font-handwriting);
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: bold;
   color: var(--color-text-primary);
   word-break: break-all;
+  line-height: 1.2;
 }
 
 .b64-filesize {
   font-family: var(--font-sans);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--color-text-secondary);
-}
-
-.b64-btn-change {
-  margin-top: 6px;
-  background-color: transparent;
-  border: 2px solid var(--color-accent);
-  color: var(--color-accent);
-  font-family: var(--font-handwriting);
-  font-size: 1rem;
-  padding: 4px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  width: fit-content;
-}
-
-.b64-btn-change:hover {
-  background-color: var(--color-accent);
-  color: white;
-}
-
-/* ── Textarea ── */
-
-.b64-output-area {
-  width: 100%;
-}
-
-.b64-textarea {
-  width: 100%;
-  min-height: 120px;
-  max-height: 200px;
-  padding: var(--spacing-md);
-  border: 2px solid #e5e5e5;
-  border-radius: 10px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.8rem;
-  line-height: 1.4;
-  resize: vertical;
-  color: var(--color-text-primary);
-  background-color: #fefefe;
-  box-sizing: border-box;
-  word-break: break-all;
-  transition: border-color 0.2s;
-}
-
-.b64-textarea:focus {
-  outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
-}
-
-.b64-decode-input {
-  min-height: 160px;
-}
-
-/* ── Botones de Acción ── */
-
-.b64-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
+  justify-content: space-between;
 }
 
-.b64-btn-copy,
-.b64-btn-download {
+.b64-controls-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+/* ── Botones ── */
+.btn-text-action {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 18px;
-  border: 2px solid var(--color-text-primary);
-  border-radius: 10px 3px 8px 2px / 3px 10px 2px 8px;
-  font-family: var(--font-handwriting);
-  font-size: 1.05rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  background-color: white;
+  gap: 8px;
+  background: transparent;
+  border: 1.5px solid var(--color-text-primary);
   color: var(--color-text-primary);
+  font-family: var(--font-handwriting);
+  font-size: 1.1rem;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
 }
 
-.b64-btn-copy:hover {
-  background-color: var(--color-accent);
-  border-color: var(--color-accent);
-  color: white;
+.btn-text-action:hover {
+  background-color: var(--color-bg-surface);
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 113, 227, 0.2);
-}
-
-.b64-btn-download {
-  background-color: var(--color-accent);
   border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.btn-download-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: var(--color-accent);
   color: white;
+  border: 2px solid var(--color-text-primary);
+  padding: 14px;
+  font-family: var(--font-handwriting);
+  font-size: 1.3rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 4px 4px 0px var(--color-text-primary);
 }
 
-.b64-btn-download:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.25);
+.btn-download-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--color-text-primary);
+  filter: brightness(1.1);
 }
 
-/* ── Toast de copiado ── */
+.btn-download-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px var(--color-text-primary);
+}
 
 .b64-copied-toast {
   text-align: center;
@@ -220,6 +220,7 @@
   border: 2px solid #bbf7d0;
   border-radius: 8px;
   animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin-top: 8px;
 }
 
 @keyframes popIn {
@@ -227,78 +228,16 @@
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* ── Decodificar ── */
-
-.b64-decode-label {
-  font-family: var(--font-handwriting);
-  font-size: 1.2rem;
-  color: var(--color-text-primary);
-  font-weight: bold;
-}
-
-.b64-decode-error {
-  padding: 12px 16px;
-  background-color: #fef2f2;
-  border: 2px solid #fecaca;
-  border-radius: 8px;
-  font-family: var(--font-sans);
-  font-size: 0.9rem;
-  color: #dc2626;
-}
-
-.b64-decode-result {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-md);
-}
-
-.b64-decode-result-title {
-  font-family: var(--font-handwriting);
-  font-size: 1.4rem;
-  color: #16a34a;
-  margin: 0;
-}
-
-.b64-decode-preview {
-  max-width: 400px;
-  border: 2px dashed #e5e5e5;
-  border-radius: 12px;
-  overflow: hidden;
-  background-color: #f8f9fa;
-  display: flex;
-  justify-content: center;
-  padding: var(--spacing-sm);
-}
-
-.b64-decode-preview img {
-  max-width: 100%;
-  max-height: 300px;
-  object-fit: contain;
-}
-
-/* ── Responsive ── */
-
-@media (max-width: 768px) {
-  .b64-tabs {
-    flex-direction: column;
+/* ── Responsividad ── */
+@media (max-width: 1024px) {
+  .b64-main-layout {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
   }
-
-  .b64-encode-header {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .b64-btn-change {
-    align-self: center;
-  }
-
-  .b64-actions {
-    flex-direction: column;
-  }
-
-  .b64-btn-copy,
-  .b64-btn-download {
-    justify-content: center;
+  
+  .b64-sidebar {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
   }
 }
