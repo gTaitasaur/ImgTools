@@ -45,9 +45,18 @@ export const ColorPaletteModule: React.FC = () => {
       } else {
         setHarmonies(null);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error extrayendo colores:", error);
-      showToast('No se pudieron extraer los colores.', 'error');
+      
+      // Detectar si el error es por fallo de red al descargar el motor (Lazy Loading)
+      const isNetworkError = error.name === 'ChunkLoadError' || error.message?.includes('Loading chunk');
+      
+      if (isNetworkError) {
+        showToast('Error de conexión: No se pudieron descargar los motores de color. Reintenta o recarga la página.', 'error', 6000);
+      } else {
+        showToast('No se pudieron extraer los colores de esta imagen.', 'error');
+      }
+      
       setSwatches(null);
       setHarmonies(null);
     } finally {
