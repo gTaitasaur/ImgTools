@@ -39,6 +39,15 @@ export const SeoHead: React.FC = () => {
       ? seoEntry.description[locale]
       : 'Free browser-based image tools. Your files never leave your device.';
 
+    // ── 0. Robots (Soft 404 Protection) ──
+    if (!seoEntry) {
+      setMetaTag('name', 'robots', 'noindex, nofollow');
+    } else {
+      // Si existía un tag managed de robots, lo quitamos para que Google indexe
+      const robots = document.head.querySelector('meta[name="robots"][data-seo="managed"]');
+      if (robots) robots.remove();
+    }
+
     // ── 1. Title ──
     document.title = title;
 

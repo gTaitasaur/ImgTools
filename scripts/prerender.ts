@@ -163,8 +163,27 @@ async function prerender(): Promise<void> {
     }
   }
 
+  // 4. Generar 404.html (crítico para Cloudflare Pages/Hosting)
+  // Usamos una ruta inexistente para que React renderice el componente NotFound
+  if (render) {
+    const url404 = '/404-fallback';
+    const outputPath404 = resolve(DIST_DIR, '404.html');
+    const appHtml404 = render(url404);
+    
+    // Para el 404 usamos el template base pero inyectamos el noindex manualmente
+    // ya que no hay seoEntry para /404-fallback
+    const noIndexTag = '    <meta name="robots" content="noindex, nofollow" />';
+    
+    let html404 = template;
+    html404 = html404.replace('<!--head-tags-->', noIndexTag);
+    html404 = html404.replace('<!--app-html-->', appHtml404);
+    
+    writeFileSync(outputPath404, html404, 'utf-8');
+    console.log(`  ✅ 404.html → dist/404.html (Fallback)`);
+  }
+
   console.log(`\n📊 Prerendering completado: ${successCount} OK, ${fallbackCount} fallbacks`);
-  console.log(`📁 Total archivos HTML: ${successCount + fallbackCount}\n`);
+  console.log(`📁 Total archivos HTML: ${successCount + fallbackCount + (render ? 1 : 0)}\n`);
 }
 
 prerender().catch((err) => {
