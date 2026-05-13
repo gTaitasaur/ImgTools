@@ -1,0 +1,26 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 
+    Decisión Técnica: Usamos un ViewBox de 1024x1024 para alta resolución.
+    Agregamos un fondo blanco para compatibilidad con redes sociales.
+  -->
+  <rect width="1024" height="1024" fill="white"/>
+  
+  <!-- 
+    Contenedor del Logo: 
+    Escalamos el diseño original (24x24) para que ocupe el 65% del espacio (aprox 665px).
+    Esto deja un margen de seguridad para recortes circulares en perfiles.
+    Cálculo: (1024 / 24) * 0.65 = 27.73 de escala.
+    Posicionamiento: (1024 - (24 * 27.73)) / 2 = 179.24 de offset.
+  -->
+  <g transform="translate(179.24 179.24) scale(27.73)">
+    <g transform="rotate(45 12 12)">
+      <!-- Píxeles Negros Exteriores -->
+      <rect x="6" y="6" width="4" height="4" fill="black" />
+      <rect x="14" y="6" width="4" height="4" fill="black" />
+      <rect x="6" y="14" width="4" height="4" fill="black" />
+      <rect x="14" y="14" width="4" height="4" fill="black" />
+      <!-- Núcleo Púrpura Central -->
+      <rect x="10" y="10" width="4" height="4" fill="#a855f7" />
+    </g>
+  </g>
+</svg>
