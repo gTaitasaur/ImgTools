@@ -33,7 +33,7 @@ export const Footer: React.FC = () => {
             <h3 className="footer-logo">Pixetide</h3>
             <p className="footer-tagline">{t('footer.tagline')}</p>
             <a
-              href="https://ko-fi.com/taitasaur"
+              href="https://ko-fi.com/pixetide"
               target="_blank"
               rel="noopener noreferrer"
               className="footer-kofi"

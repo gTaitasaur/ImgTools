@@ -88,7 +88,7 @@ export const Navbar: React.FC = () => {
 
             {/* Ko-fi Support */}
             <a
-              href="https://ko-fi.com/taitasaur"
+              href="https://ko-fi.com/pixetide"
               target="_blank"
               rel="noopener noreferrer"
               className="nav-btn-support"
