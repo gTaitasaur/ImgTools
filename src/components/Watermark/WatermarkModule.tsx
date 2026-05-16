@@ -14,6 +14,8 @@ import {
 } from '../../types/watermark';
 import { showToast } from '../UI/Toast/toastManager';
 import { useLocale } from '../../i18n/useLocale';
+import { Button } from '../UI/Button/Button';
+import { DownloadButton } from '../UI/DownloadButton/DownloadButton';
 import './WatermarkModule.css';
 
 interface WatermarkModuleProps {
@@ -632,12 +634,12 @@ export const WatermarkModule: React.FC<WatermarkModuleProps> = ({
               e.target.value = '';
             }
           }} />
-         <button className="btn-text-action" onClick={() => addPhotosInputRef.current?.click()} disabled={isProcessing}>
+         <Button variant="secondary" onClick={() => addPhotosInputRef.current?.click()} disabled={isProcessing}>
             + {t('wm.addPhotos')}
-         </button>
-         <button className="btn-text-action danger" onClick={handleClearAllInternal} disabled={isProcessing}>
+         </Button>
+         <Button variant="danger" onClick={handleClearAllInternal} disabled={isProcessing}>
             {t('conv.clearAll')}
-         </button>
+         </Button>
       </div>
 
       <div className="wm-main-layout">
@@ -704,31 +706,29 @@ export const WatermarkModule: React.FC<WatermarkModuleProps> = ({
             </div>
             
             <div className="wm-action-buttons">
-              <button className="btn-action-brutal duplicate" onClick={handleDuplicate} title={t('wm.duplicate')}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <Button variant="secondary" onClick={handleDuplicate} title={t('wm.duplicate')} icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>}>
                 {t('wm.duplicate')}
-              </button>
-              <button className="btn-action-brutal delete" onClick={() => handleDelete()} title={t('wm.delete')}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              </Button>
+              <Button variant="danger" onClick={() => handleDelete()} title={t('wm.delete')} icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>}>
                 {t('wm.delete')}
-              </button>
+              </Button>
             </div>
           </div>
 
           <div className="wm-tabs">
-            <button className={`wm-tab ${mode === 'text' ? 'active' : ''}`} onClick={handleTextTabClick}>
+            <Button variant="ghost" className={`wm-tab ${mode === 'text' ? 'active' : ''}`} onClick={handleTextTabClick}>
               {t('shared.text')}
-            </button>
-            <button className={`wm-tab ${mode === 'image' ? 'active' : ''}`} onClick={handleImageTabClick}>
+            </Button>
+            <Button variant="ghost" className={`wm-tab ${mode === 'image' ? 'active' : ''}`} onClick={handleImageTabClick}>
               {t('shared.image')}
-            </button>
+            </Button>
           </div>
 
           <div className="wm-panel">
             {mode === 'text' && (
-              <button className="wm-btn-outline" onClick={handleAddText} style={{ marginBottom: '5px' }}>
+              <Button variant="outline" onClick={handleAddText} fullWidth style={{ marginBottom: '5px' }}>
                 + {t('wm.addOtherText')}
-              </button>
+              </Button>
             )}
             
             {mode === 'image' && (
@@ -737,12 +737,12 @@ export const WatermarkModule: React.FC<WatermarkModuleProps> = ({
                   if (e.target.files && e.target.files[0]) handleLogoUpload(e.target.files[0]);
                   e.target.value = '';
                 }}/>
-                <button className="wm-btn-outline" onClick={() => {
+                <Button variant="outline" onClick={() => {
                   uploadActionRef.current = 'add';
                   logoInputRef.current?.click();
-                }}>
+                }} fullWidth>
                   + {t('wm.addOtherImage')}
-                </button>
+                </Button>
               </div>
             )}
 
@@ -795,12 +795,12 @@ export const WatermarkModule: React.FC<WatermarkModuleProps> = ({
                   <>
                     <div className="wm-control-group">
                       <label>{t('wm.logoLabel')} (PNG/SVG)</label>
-                      <button className="btn-text-action" onClick={() => {
+                      <Button variant="secondary" onClick={() => {
                         uploadActionRef.current = 'change';
                         logoInputRef.current?.click();
-                      }}>
+                      }} fullWidth>
                         {(currentConfig as ImageWatermarkConfig).url ? t('wm.changeImage') : t('wm.uploadImage')}
-                      </button>
+                      </Button>
                       {(currentConfig as ImageWatermarkConfig).url && (
                          <img src={(currentConfig as ImageWatermarkConfig).url!} alt="Logo" style={{ maxHeight: '40px', marginTop: '10px', objectFit: 'contain' }} />
                       )}
@@ -866,9 +866,14 @@ export const WatermarkModule: React.FC<WatermarkModuleProps> = ({
               </>
             )}
 
-            <button className="btn-download-primary" onClick={handleProcessAndDownload} disabled={isProcessing || watermarks.length === 0}>
-              {isProcessing ? t('shared.processing') : t('shared.download')}
-            </button>
+            <DownloadButton 
+              onClick={handleProcessAndDownload} 
+              disabled={isProcessing || watermarks.length === 0}
+              isLoading={isProcessing}
+              fullWidth
+            >
+              {t('shared.download')}
+            </DownloadButton>
 
           </div>
         </aside>

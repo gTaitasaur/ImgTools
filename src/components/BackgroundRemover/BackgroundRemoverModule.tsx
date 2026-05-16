@@ -7,6 +7,9 @@ import { MaskEditor } from './MaskEditor';
 import { ToolError } from '../Errors/ToolError';
 import { ImagePreviewCanvas } from '../UI/ImagePreviewCanvas/ImagePreviewCanvas';
 import { useLocale } from '../../i18n/useLocale';
+import { Button } from '../UI/Button/Button';
+import { DownloadButton } from '../UI/DownloadButton/DownloadButton';
+import { Loader } from '../UI/Loader/Loader';
 import './BackgroundRemoverModule.css';
 
 type ProcessingState = 'idle' | 'ready_to_process' | 'downloading_model' | 'processing' | 'done' | 'editing_mask' | 'error';
@@ -148,6 +151,10 @@ export const BackgroundRemoverModule: React.FC = () => {
                   maxHeight="60vh"
                   className="blur-effect"
                 />
+                <Loader 
+                  variant="overlay" 
+                  message={status === 'downloading_model' ? t('bgrm.downloadingAI') : t('bgrm.removingBg')} 
+                />
               </div>
             )}
 
@@ -187,54 +194,41 @@ export const BackgroundRemoverModule: React.FC = () => {
             <div className="bgrm-controls-section">
               <h4 className="bgrm-control-title">{t('bgrm.title')}</h4>
               
-              {status === 'ready_to_process' && (
+              {(status === 'ready_to_process' || status === 'downloading_model' || status === 'processing') && (
                 <div className="bgrm-actions-panel fade-in">
-                  <button className="btn-download-primary" onClick={startProcessing}>
+                  <Button 
+                    onClick={startProcessing} 
+                    fullWidth 
+                    disabled={status === 'downloading_model' || status === 'processing'}
+                  >
                     {t('bgrm.removeNow')}
-                  </button>
+                  </Button>
                   
-                  <button className="btn-text-action" onClick={() => fileInputRef.current?.click()} style={{ justifyContent: 'center' }}>
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l4-4m-4 4V4" />
-                    </svg>
+                  <Button 
+                    variant="secondary" 
+                    onClick={() => fileInputRef.current?.click()} 
+                    fullWidth
+                    disabled={status === 'downloading_model' || status === 'processing'}
+                  >
                     {t('shared.chooseAnother')}
-                  </button>
+                  </Button>
                 </div>
               )}
 
-              {(status === 'downloading_model' || status === 'processing') && (
-                <div className="bgrm-sidebar-loading fade-in">
-                  <div className="spinner" style={{ borderColor: 'var(--color-accent)', borderTopColor: 'transparent', margin: '0 auto 20px', width: '40px', height: '40px' }}></div>
-                  <h3 className="bgrm-loading-title">
-                    {status === 'downloading_model' ? t('bgrm.downloadingAI') : t('bgrm.removingBg')}
-                  </h3>
-                  <p className="bgrm-loading-desc">
-                    {status === 'downloading_model' 
-                      ? t('bgrm.downloadingDesc') 
-                      : t('bgrm.removingDesc')}
-                  </p>
-                </div>
-              )}
 
               {status === 'done' && (
                 <div className="bgrm-actions-panel fade-in">
-                  <button className="btn-download-primary" onClick={handleDownload}>
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24" style={{ marginRight: '8px' }}>
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l4-4m-4 4V4" />
-                    </svg>
+                  <DownloadButton onClick={handleDownload} fullWidth>
                     {t('shared.downloadPng')}
-                  </button>
+                  </DownloadButton>
                   
-                  <button className="btn-text-action" onClick={() => setStatus('editing_mask')} style={{ justifyContent: 'center', marginTop: '10px' }}>
+                  <Button variant="secondary" onClick={() => setStatus('editing_mask')} fullWidth style={{ marginTop: '10px' }}>
                     {t('bgrm.refineCut')}
-                  </button>
+                  </Button>
                   
-                  <button className="btn-text-action" onClick={() => fileInputRef.current?.click()} style={{ justifyContent: 'center' }}>
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l4-4m-4 4V4" />
-                    </svg>
+                  <Button variant="secondary" onClick={() => fileInputRef.current?.click()} fullWidth>
                     {t('shared.uploadAnother')}
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>

@@ -31,16 +31,6 @@
 
 .bgrm-loading-preview {
   position: relative;
-  border: 2px solid var(--color-accent);
-}
-
-.bgrm-loading-preview::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(2px);
-  z-index: 10;
 }
 
 .blur-effect {
@@ -82,27 +72,6 @@
 }
 
 
-/* Textos de Carga en Sidebar */
-.bgrm-sidebar-loading {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 0;
-}
-
-.bgrm-loading-title {
-  font-family: var(--font-handwriting);
-  font-size: 1.4rem;
-  color: var(--color-text-primary);
-  margin-bottom: 4px;
-}
-
-.bgrm-loading-desc {
-  font-size: 0.9rem;
-  color: var(--color-text-secondary);
-  line-height: 1.4;
-}
 
 .bgrm-result-state {
   display: flex;

@@ -6,6 +6,9 @@ import { validateImageFile } from '../../utils/fileUpload';
 import { DragAndDrop } from '../DragAndDrop/DragAndDrop';
 import { ImagePreviewCanvas } from '../UI/ImagePreviewCanvas/ImagePreviewCanvas';
 import { showToast } from '../UI/Toast/toastManager';
+import { useLocale } from '../../i18n/useLocale';
+import { Button } from '../UI/Button/Button';
+import { DownloadButton } from '../UI/DownloadButton/DownloadButton';
 import './CropperModule.css';
 
 interface CropperModuleProps {
@@ -20,6 +23,7 @@ export const CropperModule: React.FC<CropperModuleProps> = ({ imageUrl, onImageS
   const [aspect, setAspect] = useState<number | undefined>(undefined);
   const [isExporting, setIsExporting] = useState<boolean>(false);
   const [isDragOver, setIsDragOver] = useState<boolean>(false);
+  const { t } = useLocale();
   
   // Dimensiones para responsividad
   const [naturalDim, setNaturalDim] = useState({ w: 0, h: 0 });
@@ -121,7 +125,7 @@ export const CropperModule: React.FC<CropperModuleProps> = ({ imageUrl, onImageS
       URL.revokeObjectURL(localUrl);
     } catch (error) {
       console.error('Error exportando:', error);
-      showToast('No se pudo procesar la imagen. Asegúrate de que el archivo aún sea accesible.', 'error');
+      showToast(t('shared.errorExport'), 'error');
     } finally {
       setIsExporting(false);
     }
@@ -147,14 +151,13 @@ export const CropperModule: React.FC<CropperModuleProps> = ({ imageUrl, onImageS
 
       {/* Barra superior de acciones rápidas */}
       <div className="cropper-top-bar">
-        <button className="btn-text-action" onClick={() => fileInputRef.current?.click()}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="17 8 12 3 7 8"></polyline>
-            <line x1="12" y1="3" x2="12" y2="15"></line>
-          </svg>
-          Subir Otra Foto
-        </button>
+        <Button 
+          variant="secondary" 
+          onClick={() => fileInputRef.current?.click()}
+          icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>}
+        >
+          {t('shared.uploadAnother')}
+        </Button>
       </div>
 
       <div className="cropper-main-layout">
@@ -213,28 +216,15 @@ export const CropperModule: React.FC<CropperModuleProps> = ({ imageUrl, onImageS
           />
 
           <div className="cropper-actions-panel">
-            <button 
-              className="btn-download-primary" 
+            <DownloadButton 
               onClick={handleDownload}
               disabled={!completedCrop || isExporting}
+              isLoading={isExporting}
+              fullWidth
             >
-              {isExporting ? (
-                <>
-                  <div className="btn-spinner"></div>
-                  Procesando...
-                </>
-              ) : (
-                <>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '10px' }}>
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                  </svg>
-                  Descargar Recorte
-                </>
-              )}
-            </button>
-            <p className="cropper-legal-hint">Máxima calidad. 100% privado.</p>
+              {t('shared.downloadCrop')}
+            </DownloadButton>
+            <p className="cropper-legal-hint">{t('shared.privacyShort')}</p>
           </div>
         </aside>
       </div>

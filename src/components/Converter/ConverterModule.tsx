@@ -3,6 +3,8 @@ import { ConverterFile, TargetFormat, FallbackColor, FORMAT_LABELS } from '../..
 import { MultiDragAndDrop } from '../DragAndDrop/MultiDragAndDrop';
 import { detectTransparency, convertImage, packageZip } from '../../utils/formatConverter';
 import { useLocale } from '../../i18n/useLocale';
+import { Button } from '../UI/Button/Button';
+import { DownloadButton } from '../UI/DownloadButton/DownloadButton';
 import './ConverterModule.css';
 
 interface ConverterModuleProps {
@@ -203,16 +205,14 @@ export const ConverterModule: React.FC<ConverterModuleProps> = ({ files, onAddFi
       >
         <div className="converter-header-row">
           <h3 className="converter-title">{t('conv.filesLoaded')} ({conversionList.length})</h3>
-          <button
-            className="btn-text-action"
+          <Button
+            variant="secondary"
             onClick={() => addFilesInputRef.current?.click()}
             disabled={isProcessing}
+            icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14" /></svg>}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
-              <path d="M12 5v14M5 12h14" />
-            </svg>
             {t('shared.uploadMore')}
-          </button>
+          </Button>
           <input
             type="file"
             accept="image/*"
@@ -351,31 +351,18 @@ export const ConverterModule: React.FC<ConverterModuleProps> = ({ files, onAddFi
         )}
 
         <div className="sidebar-actions">
-          <button
-            className="btn-download-primary"
+          <DownloadButton
             onClick={handleProcessBatch}
             disabled={isProcessing || idleCount === 0}
+            isLoading={isProcessing}
+            fullWidth
           >
-            {isProcessing ? (
-              <>
-                <div className="btn-spinner"></div>
-                {t('shared.processing')}
-              </>
-            ) : (
-              <>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '10px' }}>
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                  <polyline points="7 10 12 15 17 10"></polyline>
-                  <line x1="12" y1="15" x2="12" y2="3"></line>
-                </svg>
-                {idleCount === conversionList.length ? t('conv.convertAll') : t('conv.convertPending')}
-              </>
-            )}
-          </button>
+            {idleCount === conversionList.length ? t('conv.convertAll') : t('conv.convertPending')}
+          </DownloadButton>
 
-          <button className="btn-clear-all" onClick={handleClearInternal} disabled={isProcessing}>
+          <Button variant="danger" onClick={handleClearInternal} disabled={isProcessing} fullWidth style={{ marginTop: '10px' }}>
             {t('conv.clearAll')}
-          </button>
+          </Button>
         </div>
 
         <p className="privacy-hint">{t('conv.privacyHint')}</p>

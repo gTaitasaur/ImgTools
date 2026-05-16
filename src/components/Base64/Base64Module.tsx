@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import { DragAndDrop } from '../DragAndDrop/DragAndDrop';
 import { ImagePreviewCanvas } from '../UI/ImagePreviewCanvas/ImagePreviewCanvas';
 import { useLocale } from '../../i18n/useLocale';
+import { Button } from '../UI/Button/Button';
+import { DownloadButton } from '../UI/DownloadButton/DownloadButton';
 import './Base64Module.css';
 
 type TabMode = 'encode' | 'decode';
@@ -214,24 +216,22 @@ export const Base64Module: React.FC = () => {
       <aside className="b64-sidebar">
         {/* Pestañas de Modo */}
         <div className="b64-tabs">
-          <button
+          <Button
+            variant="ghost"
             className={`b64-tab ${activeTab === 'encode' ? 'active' : ''}`}
             onClick={() => setActiveTab('encode')}
+            icon={<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>}
           >
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
             {t('b64.encode')}
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="ghost"
             className={`b64-tab ${activeTab === 'decode' ? 'active' : ''}`}
             onClick={() => setActiveTab('decode')}
+            icon={<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l4 4m0 0l4-4m-4 4V4" /></svg>}
           >
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l4 4m0 0l4-4m-4 4V4" />
-            </svg>
             {t('b64.decode')}
-          </button>
+          </Button>
         </div>
 
         {/* Controles para CODIFICAR */}
@@ -250,22 +250,19 @@ export const Base64Module: React.FC = () => {
             </div>
 
             <div className="b64-controls-section" style={{ marginTop: '10px' }}>
-              <button className="btn-text-action" onClick={() => handleCopy('raw')} style={{ justifyContent: 'center' }}>
+              <Button variant="secondary" onClick={() => handleCopy('raw')} fullWidth>
                 📋 {t('b64.copyBase64')}
-              </button>
-              <button className="btn-text-action" onClick={() => handleCopy('html')} style={{ justifyContent: 'center' }}>
+              </Button>
+              <Button variant="secondary" onClick={() => handleCopy('html')} fullWidth>
                 {'</>'} {t('b64.copyHtml')}
-              </button>
-              <button className="btn-text-action" onClick={() => handleCopy('css')} style={{ justifyContent: 'center' }}>
+              </Button>
+              <Button variant="secondary" onClick={() => handleCopy('css')} fullWidth>
                 🎨 {t('b64.copyCss')}
-              </button>
+              </Button>
               
-              <button className="btn-download-primary" onClick={handleDownloadTxt} style={{ marginTop: '10px' }}>
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20" style={{ marginRight: '8px' }}>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l4-4m-4 4V4" />
-                </svg>
+              <DownloadButton onClick={handleDownloadTxt} style={{ marginTop: '10px' }} fullWidth>
                 {t('shared.downloadTxt')}
-              </button>
+              </DownloadButton>
               
               <input
                 type="file"
@@ -274,12 +271,9 @@ export const Base64Module: React.FC = () => {
                 style={{ display: 'none' }}
                 onChange={handleFileInputChange}
               />
-              <button className="btn-text-action" onClick={handleChangeImage} style={{ justifyContent: 'center', marginTop: '5px' }}>
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l4-4m-4 4V4" />
-                </svg>
+              <Button variant="secondary" onClick={handleChangeImage} fullWidth style={{ marginTop: '5px' }}>
                 {t('shared.chooseAnother')}
-              </button>
+              </Button>
 
               {copiedLabel && (
                 <div className="b64-copied-toast">
@@ -313,12 +307,9 @@ export const Base64Module: React.FC = () => {
                     {decodedFormat.toUpperCase()}
                   </span>
                 </div>
-                <button className="btn-download-primary" onClick={handleDownloadDecoded} style={{ marginTop: '10px' }}>
-                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20" style={{ marginRight: '8px' }}>
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l4-4m-4 4V4" />
-                  </svg>
+                <DownloadButton onClick={handleDownloadDecoded} style={{ marginTop: '10px' }} fullWidth>
                   {t('shared.download')}
-                </button>
+                </DownloadButton>
               </>
             )}
           </div>
